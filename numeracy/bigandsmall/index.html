@@ -31,39 +31,26 @@ html,body{
 
 .slide{
     position:absolute;
-    top:0;
-    left:0;
+    inset:0;
     width:100%;
     height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
 }
 
 /* ================= SLIDE 1 ================= */
 
 #slide1{
     background:white;
-    z-index:20;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:50;
+
     animation:fadeOut 1s ease forwards;
     animation-delay:2s;
 }
 
 .logo{
-    width:280px;
-    max-width:70vw;
-    animation:zoomIn 1s ease;
-}
-
-@keyframes zoomIn{
-    from{
-        transform:scale(0.5);
-        opacity:0;
-    }
-    to{
-        transform:scale(1);
-        opacity:1;
-    }
+    width:min(300px,70vw);
 }
 
 @keyframes fadeOut{
@@ -76,37 +63,51 @@ html,body{
 /* ================= SLIDE 2 ================= */
 
 #slide2{
+    display:flex;
     flex-direction:column;
-    padding:10px;
 
     background:
-    linear-gradient(rgba(255,255,255,0.15),rgba(255,255,255,0.15)),
+    linear-gradient(rgba(255,255,255,0.12),rgba(255,255,255,0.12)),
     url("https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1200&auto=format&fit=crop");
 
     background-size:cover;
     background-position:center;
 
     overflow:hidden;
+
+    padding:8px;
 }
 
+/* ================= TITLE ================= */
+
 .title{
-    font-size:clamp(24px,3vw,42px);
-    color:white;
+    height:8vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:clamp(22px,2.5vw,42px);
     font-weight:900;
-    margin-bottom:8px;
-    text-shadow:3px 3px 8px rgba(0,0,0,0.3);
-    text-align:center;
+
+    color:white;
+
+    text-shadow:3px 3px 8px rgba(0,0,0,0.35);
 }
 
 /* ================= MAIN LAYOUT ================= */
 
-.main-container{
-    width:100%;
-    height:calc(100vh - 70px);
+.game-layout{
+    flex:1;
 
     display:grid;
     grid-template-columns:1fr 1fr;
+
     gap:10px;
+
+    height:92vh;
+
+    overflow:hidden;
 }
 
 /* ================= LEFT PANEL ================= */
@@ -114,24 +115,27 @@ html,body{
 .left-panel{
     background:rgba(255,255,255,0.88);
 
-    border-radius:25px;
+    border-radius:22px;
+
     padding:10px;
 
     display:grid;
+
     grid-template-columns:repeat(2,1fr);
+
     grid-template-rows:repeat(3,1fr);
 
     gap:10px;
 
-    height:100%;
+    overflow:hidden;
 }
 
-/* ================= CARDS ================= */
+/* ================= ITEM CARDS ================= */
 
 .card{
-    background:white;
+    background:#ffffff;
 
-    border-radius:22px;
+    border-radius:20px;
     border:5px solid;
 
     display:flex;
@@ -139,39 +143,39 @@ html,body{
     justify-content:center;
     align-items:center;
 
-    aspect-ratio:1/1;
-
-    padding:8px;
-
     cursor:grab;
 
-    transition:0.3s;
+    transition:0.25s;
 
-    box-shadow:0 5px 10px rgba(0,0,0,0.12);
+    min-height:0;
+
+    box-shadow:0 4px 10px rgba(0,0,0,0.12);
 }
 
 .card:hover{
-    transform:scale(1.03);
+    transform:scale(1.02);
 }
 
 .card img{
-    width:60%;
-    height:60%;
-    object-fit:contain;
+    width:48%;
+    height:48%;
 
-    max-width:70px;
-    max-height:70px;
+    object-fit:contain;
 }
 
 .card p{
-    margin-top:6px;
-    font-size:clamp(13px,1vw,18px);
+    margin-top:5px;
+
+    font-size:clamp(11px,1vw,18px);
+
     font-weight:800;
+
     color:#444;
+
     text-align:center;
 }
 
-/* BORDER COLORS */
+/* ================= BORDERS ================= */
 
 .border1{ border-color:#ff6b6b; }
 .border2{ border-color:#48dbfb; }
@@ -185,88 +189,112 @@ html,body{
 .right-panel{
     display:grid;
     grid-template-columns:1fr 1fr;
+
     gap:10px;
-    height:100%;
+
+    overflow:hidden;
 }
 
+/* ================= DROP ZONES ================= */
+
 .zone{
-    background:rgba(255,255,255,0.9);
+    background:rgba(255,255,255,0.88);
 
-    border-radius:25px;
-    border:5px dashed white;
+    border-radius:22px;
 
-    padding:8px;
+    border:4px dashed rgba(255,255,255,0.9);
 
     display:flex;
     flex-direction:column;
+
     align-items:center;
+
+    padding:8px;
 
     overflow:hidden;
 }
 
 .zone h2{
-    font-size:clamp(22px,2vw,34px);
-    color:#ff4081;
+    font-size:clamp(20px,2vw,34px);
+
+    color:#ff2e7a;
+
     font-weight:900;
-    margin-bottom:8px;
+
+    margin-bottom:6px;
 }
 
 .drop-items{
     width:100%;
 
+    flex:1;
+
     display:grid;
+
     grid-template-columns:1fr;
-    gap:8px;
+
+    gap:6px;
 
     justify-items:center;
 
-    overflow-y:auto;
-    padding-bottom:10px;
+    overflow:hidden;
 }
 
-/* ================= SMALLER CARDS INSIDE DROP ZONE ================= */
+/* ================= DROPPED CARDS ================= */
 
-.zone .card{
+.drop-items .card{
     width:100%;
-    max-width:120px;
+    max-width:100px;
+
     aspect-ratio:1/1;
+
+    border-width:4px;
 }
 
-.zone .card img{
-    max-width:50px;
-    max-height:50px;
+.drop-items .card img{
+    width:45%;
+    height:45%;
 }
 
-.zone .card p{
-    font-size:13px;
+.drop-items .card p{
+    font-size:11px;
 }
 
 /* ================= FEEDBACK ================= */
 
 .feedback{
     position:fixed;
+
     top:50%;
     left:50%;
+
     transform:translate(-50%,-50%);
+
     font-size:90px;
+
     opacity:0;
+
     pointer-events:none;
+
     z-index:999;
 }
 
 .show{
-    animation:popup 0.8s ease;
+    animation:pop 0.7s ease;
 }
 
-@keyframes popup{
+@keyframes pop{
+
     0%{
-        transform:translate(-50%,-50%) scale(0.3);
+        transform:translate(-50%,-50%) scale(0.2);
         opacity:0;
     }
+
     40%{
         transform:translate(-50%,-50%) scale(1.3);
         opacity:1;
     }
+
     100%{
         transform:translate(-50%,-50%) scale(1);
         opacity:0;
@@ -277,94 +305,155 @@ html,body{
 
 #slide3{
     display:none;
-    background:linear-gradient(135deg,#ff9ff3,#feca57,#48dbfb);
-    overflow:hidden;
+
+    justify-content:center;
+    align-items:center;
+
     flex-direction:column;
+
+    background:linear-gradient(135deg,#ff9ff3,#48dbfb,#feca57);
+
+    overflow:hidden;
 }
 
 .success{
-    font-size:clamp(55px,10vw,120px);
+    font-size:clamp(60px,10vw,120px);
+
     color:white;
+
     font-weight:900;
-    text-shadow:4px 4px 12px rgba(0,0,0,0.3);
-    z-index:10;
+
+    z-index:5;
+
+    text-shadow:4px 4px 12px rgba(0,0,0,0.25);
+
     animation:bounce 1s infinite;
 }
 
 @keyframes bounce{
+
     0%,100%{
         transform:translateY(0);
     }
+
     50%{
-        transform:translateY(-15px);
+        transform:translateY(-12px);
     }
 }
 
 canvas{
     position:absolute;
-    top:0;
-    left:0;
+    inset:0;
+}
+
+/* ================= TABLET ================= */
+
+@media(max-width:1024px){
+
+    .game-layout{
+        gap:8px;
+    }
+
+    .left-panel,
+    .right-panel{
+        gap:8px;
+    }
+
+    .card{
+        border-width:4px;
+    }
+
+    .card img{
+        width:42%;
+        height:42%;
+    }
 }
 
 /* ================= MOBILE ================= */
 
 @media(max-width:768px){
 
-    .main-container{
-        gap:6px;
+    #slide2{
+        padding:5px;
+    }
+
+    .title{
+        height:7vh;
+
+        font-size:30px;
+    }
+
+    .game-layout{
+        height:93vh;
+
+        gap:5px;
     }
 
     .left-panel{
-        gap:6px;
-        padding:6px;
+        padding:5px;
+
+        gap:5px;
+
+        border-radius:16px;
     }
 
     .right-panel{
-        gap:6px;
-    }
-
-    .card{
-        border-width:4px;
-        border-radius:18px;
-        padding:5px;
-    }
-
-    .card img{
-        width:55%;
-        height:55%;
-        max-width:55px;
-        max-height:55px;
-    }
-
-    .card p{
-        font-size:12px;
-        margin-top:3px;
+        gap:5px;
     }
 
     .zone{
-        padding:5px;
+        border-radius:16px;
+
+        padding:4px;
     }
 
     .zone h2{
-        font-size:22px;
-        margin-bottom:5px;
+        font-size:18px;
+
+        margin-bottom:3px;
     }
 
-    .zone .card{
-        max-width:85px;
+    .card{
+        border-radius:16px;
+
+        border-width:3px;
     }
 
-    .zone .card img{
-        max-width:38px;
-        max-height:38px;
+    .card img{
+        width:40%;
+        height:40%;
     }
 
-    .zone .card p{
+    .card p{
         font-size:10px;
+
+        margin-top:2px;
+    }
+
+    .drop-items{
+        gap:4px;
+    }
+
+    .drop-items .card{
+        max-width:72px;
+    }
+
+    .drop-items .card img{
+        width:38%;
+        height:38%;
+    }
+
+    .drop-items .card p{
+        font-size:9px;
     }
 
     .feedback{
-        font-size:70px;
+        font-size:65px;
+    }
+
+    .success{
+        font-size:55px;
+        text-align:center;
     }
 }
 
@@ -377,6 +466,7 @@ canvas{
 
 <audio id="correctSound">
 <source src="correct.mp3" type="audio/mpeg">
+<!-- Replace with your correct sound -->
 </audio>
 
 <audio id="wrongSound">
@@ -392,9 +482,10 @@ canvas{
 
 <div id="slide1" class="slide">
 
-    <img src="assets/innovine-logo.png"
-         class="logo"
-         alt="Innovine Logo">
+    <img
+    src="assets/innovine-logo.png"
+    class="logo"
+    alt="Innovine Logo">
 
 </div>
 
@@ -406,9 +497,9 @@ canvas{
         Identify big and small
     </div>
 
-    <div class="main-container">
+    <div class="game-layout">
 
-        <!-- LEFT PANEL -->
+        <!-- ================= LEFT PANEL ================= -->
 
         <div class="left-panel" id="pool">
 
@@ -430,8 +521,9 @@ canvas{
                  draggable="true"
                  data-answer="small">
 
-                <img src="https://cdn-icons-png.flaticon.com/512/861/861512.png"
-                     alt="Tennisball">
+                <img
+                src="https://cdn-icons-png.flaticon.com/512/861/861512.png"
+                alt="Tennisball">
 
                 <!-- Replace with:
                 assets/tennisball.png
@@ -483,8 +575,9 @@ canvas{
                  draggable="true"
                  data-answer="small">
 
-                <img src="https://cdn-icons-png.flaticon.com/512/628/628324.png"
-                     alt="Plant">
+                <img
+                src="https://cdn-icons-png.flaticon.com/512/628/628324.png"
+                alt="Plant">
 
                 <!-- Replace with:
                 assets/plant.png
@@ -496,7 +589,7 @@ canvas{
 
         </div>
 
-        <!-- RIGHT PANEL -->
+        <!-- ================= RIGHT PANEL ================= -->
 
         <div class="right-panel">
 
@@ -540,7 +633,7 @@ canvas{
 
 <script>
 
-/* ================= SLIDE TRANSITION ================= */
+/* ================= INTRO ================= */
 
 setTimeout(() => {
 
@@ -548,21 +641,21 @@ setTimeout(() => {
 
 },3000);
 
-/* ================= DRAG & DROP ================= */
+/* ================= ELEMENTS ================= */
 
 const cards = document.querySelectorAll(".card");
 const zones = document.querySelectorAll(".zone");
 
-const correctSound = document.getElementById("correctSound");
-const wrongSound = document.getElementById("wrongSound");
-
 const tick = document.getElementById("tick");
 const cross = document.getElementById("cross");
+
+const correctSound = document.getElementById("correctSound");
+const wrongSound = document.getElementById("wrongSound");
 
 let draggedCard = null;
 let correctCount = 0;
 
-/* DESKTOP + MOBILE */
+/* ================= DRAG SUPPORT ================= */
 
 cards.forEach(card => {
 
@@ -580,6 +673,8 @@ cards.forEach(card => {
 
 });
 
+/* ================= DROP SUPPORT ================= */
+
 zones.forEach(zone => {
 
     zone.addEventListener("dragover", (e) => {
@@ -590,7 +685,7 @@ zones.forEach(zone => {
 
     zone.addEventListener("drop", () => {
 
-        processDrop(zone);
+        handleDrop(zone);
 
     });
 
@@ -598,7 +693,7 @@ zones.forEach(zone => {
 
         if(draggedCard){
 
-            processDrop(zone);
+            handleDrop(zone);
 
         }
 
@@ -608,19 +703,19 @@ zones.forEach(zone => {
 
 /* ================= GAME LOGIC ================= */
 
-function processDrop(zone){
+function handleDrop(zone){
 
-    const answer = draggedCard.dataset.answer;
-    const selectedZone = zone.dataset.zone;
+    const correctAnswer = draggedCard.dataset.answer;
+    const chosenZone = zone.dataset.zone;
 
-    if(answer === selectedZone){
+    if(correctAnswer === chosenZone){
 
-        zone.querySelector(".drop-items").appendChild(draggedCard);
+        zone.querySelector(".drop-items")
+        .appendChild(draggedCard);
 
         draggedCard.draggable = false;
 
         draggedCard.style.cursor = "default";
-        draggedCard.style.opacity = "0.95";
 
         correctSound.currentTime = 0;
         correctSound.play();
@@ -639,8 +734,7 @@ function processDrop(zone){
 
                 startConfetti();
 
-            },1200);
-
+            },1000);
         }
 
     }else{
@@ -664,7 +758,7 @@ function showTick(){
 
         tick.classList.remove("show");
 
-    },800);
+    },700);
 }
 
 function showCross(){
@@ -675,7 +769,7 @@ function showCross(){
 
         cross.classList.remove("show");
 
-    },800);
+    },700);
 }
 
 /* ================= CONFETTI ================= */
@@ -688,16 +782,16 @@ function startConfetti(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const confetti = [];
+    const pieces = [];
 
     for(let i=0;i<250;i++){
 
-        confetti.push({
+        pieces.push({
 
             x:Math.random()*canvas.width,
             y:Math.random()*canvas.height-canvas.height,
-            r:Math.random()*8+4,
-            d:Math.random()*250
+            r:Math.random()*7+3,
+            d:Math.random()*200
 
         });
 
@@ -707,14 +801,14 @@ function startConfetti(){
 
         ctx.clearRect(0,0,canvas.width,canvas.height);
 
-        confetti.forEach(c => {
+        pieces.forEach(p => {
 
             ctx.beginPath();
 
             ctx.fillStyle =
             `hsl(${Math.random()*360},100%,50%)`;
 
-            ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
 
             ctx.fill();
 
@@ -725,18 +819,16 @@ function startConfetti(){
 
     function update(){
 
-        confetti.forEach(c => {
+        pieces.forEach(p => {
 
-            c.y += Math.cos(c.d)+4+c.r/2;
+            p.y += Math.cos(p.d)+3+p.r/2;
 
-            if(c.y > canvas.height){
+            if(p.y > canvas.height){
 
-                c.y = -20;
-
+                p.y = -20;
             }
 
         });
-
     }
 
     setInterval(draw,20);
