@@ -90,23 +90,23 @@ html,body{
 }
 
 .title{
-    font-size:clamp(24px,3vw,45px);
+    font-size:clamp(24px,3vw,42px);
     color:white;
     font-weight:900;
-    margin-bottom:10px;
+    margin-bottom:8px;
     text-shadow:3px 3px 8px rgba(0,0,0,0.3);
     text-align:center;
 }
 
-/* MAIN LAYOUT */
+/* ================= MAIN LAYOUT ================= */
 
 .main-container{
     width:100%;
-    height:calc(100vh - 90px);
+    height:calc(100vh - 70px);
 
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:12px;
+    gap:10px;
 }
 
 /* ================= LEFT PANEL ================= */
@@ -119,6 +119,8 @@ html,body{
 
     display:grid;
     grid-template-columns:repeat(2,1fr);
+    grid-template-rows:repeat(3,1fr);
+
     gap:10px;
 
     height:100%;
@@ -129,7 +131,7 @@ html,body{
 .card{
     background:white;
 
-    border-radius:20px;
+    border-radius:22px;
     border:5px solid;
 
     display:flex;
@@ -137,13 +139,13 @@ html,body{
     justify-content:center;
     align-items:center;
 
-    padding:6px;
+    aspect-ratio:1/1;
+
+    padding:8px;
 
     cursor:grab;
 
     transition:0.3s;
-
-    min-height:0;
 
     box-shadow:0 5px 10px rgba(0,0,0,0.12);
 }
@@ -153,16 +155,17 @@ html,body{
 }
 
 .card img{
-    width:55%;
-    height:55%;
+    width:60%;
+    height:60%;
     object-fit:contain;
-    max-width:80px;
-    max-height:80px;
+
+    max-width:70px;
+    max-height:70px;
 }
 
 .card p{
-    margin-top:5px;
-    font-size:clamp(14px,1.3vw,20px);
+    margin-top:6px;
+    font-size:clamp(13px,1vw,18px);
     font-weight:800;
     color:#444;
     text-align:center;
@@ -182,7 +185,7 @@ html,body{
 .right-panel{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:12px;
+    gap:10px;
     height:100%;
 }
 
@@ -192,7 +195,7 @@ html,body{
     border-radius:25px;
     border:5px dashed white;
 
-    padding:10px;
+    padding:8px;
 
     display:flex;
     flex-direction:column;
@@ -202,10 +205,10 @@ html,body{
 }
 
 .zone h2{
-    font-size:clamp(22px,2vw,35px);
+    font-size:clamp(22px,2vw,34px);
     color:#ff4081;
     font-weight:900;
-    margin-bottom:10px;
+    margin-bottom:8px;
 }
 
 .drop-items{
@@ -215,7 +218,27 @@ html,body{
     grid-template-columns:1fr;
     gap:8px;
 
-    overflow:hidden;
+    justify-items:center;
+
+    overflow-y:auto;
+    padding-bottom:10px;
+}
+
+/* ================= SMALLER CARDS INSIDE DROP ZONE ================= */
+
+.zone .card{
+    width:100%;
+    max-width:120px;
+    aspect-ratio:1/1;
+}
+
+.zone .card img{
+    max-width:50px;
+    max-height:50px;
+}
+
+.zone .card p{
+    font-size:13px;
 }
 
 /* ================= FEEDBACK ================= */
@@ -283,61 +306,11 @@ canvas{
     left:0;
 }
 
-/* ================= MOBILE FIX ================= */
+/* ================= MOBILE ================= */
 
-@media(max-width:900px){
-
-    .main-container{
-        grid-template-columns:1fr 1fr;
-        gap:8px;
-        height:calc(100vh - 80px);
-    }
-
-    .left-panel{
-        gap:8px;
-        padding:8px;
-    }
-
-    .right-panel{
-        gap:8px;
-    }
-
-    .card{
-        border-width:4px;
-        border-radius:18px;
-    }
-
-    .card img{
-        max-width:60px;
-        max-height:60px;
-    }
-
-    .zone{
-        padding:8px;
-        border-width:4px;
-    }
-
-    .zone h2{
-        font-size:28px;
-        margin-bottom:5px;
-    }
-
-    .feedback{
-        font-size:75px;
-    }
-}
-
-/* EXTRA SMALL MOBILE */
-
-@media(max-width:600px){
-
-    .title{
-        font-size:28px;
-        margin-bottom:6px;
-    }
+@media(max-width:768px){
 
     .main-container{
-        height:calc(100vh - 65px);
         gap:6px;
     }
 
@@ -351,20 +324,47 @@ canvas{
     }
 
     .card{
-        padding:4px;
+        border-width:4px;
+        border-radius:18px;
+        padding:5px;
     }
 
     .card img{
-        max-width:52px;
-        max-height:52px;
+        width:55%;
+        height:55%;
+        max-width:55px;
+        max-height:55px;
     }
 
     .card p{
-        font-size:14px;
+        font-size:12px;
+        margin-top:3px;
+    }
+
+    .zone{
+        padding:5px;
     }
 
     .zone h2{
-        font-size:24px;
+        font-size:22px;
+        margin-bottom:5px;
+    }
+
+    .zone .card{
+        max-width:85px;
+    }
+
+    .zone .card img{
+        max-width:38px;
+        max-height:38px;
+    }
+
+    .zone .card p{
+        font-size:10px;
+    }
+
+    .feedback{
+        font-size:70px;
     }
 }
 
@@ -375,12 +375,10 @@ canvas{
 
 <!-- ================= AUDIO ================= -->
 
-<!-- Replace with your correct sound -->
 <audio id="correctSound">
 <source src="correct.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Replace with your wrong sound -->
 <audio id="wrongSound">
 <source src="assets/wrong.mp3" type="audio/mpeg">
 </audio>
@@ -394,8 +392,9 @@ canvas{
 
 <div id="slide1" class="slide">
 
-    <!-- Replace with your logo -->
-    <img src="assets/innovine-logo.png" class="logo" alt="Innovine Logo">
+    <img src="assets/innovine-logo.png"
+         class="logo"
+         alt="Innovine Logo">
 
 </div>
 
@@ -414,21 +413,26 @@ canvas{
         <div class="left-panel" id="pool">
 
             <!-- ELEPHANT -->
+
             <div class="card border1"
                  draggable="true"
                  data-answer="big">
 
                 <img src="assets/elephant.png" alt="Elephant">
+
                 <p>Elephant</p>
 
             </div>
 
             <!-- TENNISBALL -->
+
             <div class="card border2"
                  draggable="true"
                  data-answer="small">
 
-                <img src="https://cdn-icons-png.flaticon.com/512/861/861512.png" alt="Tennisball">
+                <img src="https://cdn-icons-png.flaticon.com/512/861/861512.png"
+                     alt="Tennisball">
+
                 <!-- Replace with:
                 assets/tennisball.png
                 -->
@@ -438,41 +442,50 @@ canvas{
             </div>
 
             <!-- TRUCK -->
+
             <div class="card border3"
                  draggable="true"
                  data-answer="big">
 
                 <img src="assets/truck.png" alt="Truck">
+
                 <p>Truck</p>
 
             </div>
 
             <!-- ANT -->
+
             <div class="card border4"
                  draggable="true"
                  data-answer="small">
 
                 <img src="assets/ant.png" alt="Ant">
+
                 <p>Ant</p>
 
             </div>
 
             <!-- TREE -->
+
             <div class="card border5"
                  draggable="true"
                  data-answer="big">
 
                 <img src="assets/tree.png" alt="Tree">
+
                 <p>Tree</p>
 
             </div>
 
             <!-- PLANT -->
+
             <div class="card border6"
                  draggable="true"
                  data-answer="small">
 
-                <img src="https://cdn-icons-png.flaticon.com/512/628/628324.png" alt="Plant">
+                <img src="https://cdn-icons-png.flaticon.com/512/628/628324.png"
+                     alt="Plant">
+
                 <!-- Replace with:
                 assets/plant.png
                 -->
@@ -533,7 +546,7 @@ setTimeout(() => {
 
     document.getElementById("slide1").style.display = "none";
 
-}, 3000);
+},3000);
 
 /* ================= DRAG & DROP ================= */
 
