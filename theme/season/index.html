@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Seasons Game</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+body{
+    background:#fff6fb;
+}
+
+.slide{
+    width:100%;
+    height:100vh;
+    display:none;
+}
+
+.active{
+    display:flex;
+}
+
+/* ---------------- SPLASH ---------------- */
+
+#splash{
+    justify-content:center;
+    align-items:center;
+    background:white;
+}
+
+#splash img{
+    width:300px;
+    max-width:80%;
+}
+
+/* ---------------- GAME ---------------- */
+
+#game{
+    flex-direction:column;
+    padding:8px;
+    background:
+    linear-gradient(135deg,#ffe0f0,#dff7ff,#fff7c7);
+}
+
+.title{
+    text-align:center;
+    font-size:clamp(16px,2vw,28px);
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.seasons{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    height:42%;
+}
+
+.season-box{
+    flex:1;
+    border-radius:20px;
+    padding:8px;
+    text-align:center;
+    border:4px solid white;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+.season-box img{
+    width:100%;
+    height:65%;
+    object-fit:contain;
+    border-radius:15px;
+    background:white;
+}
+
+.season-box h3{
+    margin-top:5px;
+    color:#fff;
+    font-size:18px;
+}
+
+.rainy{
+    background:#59c3ff;
+}
+
+.winter{
+    background:#b490ff;
+}
+
+.summer{
+    background:#ffb347;
+}
+
+.answer-area{
+    min-height:70px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:5px;
+    margin-top:5px;
+}
+
+.answer-area img{
+    width:50px;
+    height:50px;
+    object-fit:contain;
+}
+
+/* OBJECTS */
+
+.objects{
+    margin-top:10px;
+    flex:1;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.object{
+    background:white;
+    border-radius:18px;
+    padding:6px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border:3px solid #ffd4ec;
+    box-shadow:0 4px 8px rgba(0,0,0,.15);
+    cursor:pointer;
+}
+
+.object.selected{
+    border:5px solid #00bfff;
+}
+
+.object img{
+    width:100%;
+    height:100%;
+    max-height:90px;
+    object-fit:contain;
+}
+
+/* POPUP */
+
+.feedback{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:120px;
+    z-index:999;
+    display:none;
+}
+
+/* FINISH */
+
+#finish{
+    position:relative;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:linear-gradient(#7dcfff,#ffffff);
+}
+
+#finish h1{
+    font-size:60px;
+    color:#0c75ff;
+    text-shadow:3px 3px white;
+    z-index:2;
+}
+
+.snow{
+    position:absolute;
+    top:-10px;
+    color:white;
+    font-size:24px;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    from{
+        transform:translateY(-10px);
+    }
+    to{
+        transform:translateY(110vh);
+    }
+}
+
+@media(max-width:768px){
+
+.title{
+    font-size:18px;
+}
+
+.season-box h3{
+    font-size:14px;
+}
+
+.answer-area img{
+    width:38px;
+    height:38px;
+}
+
+.object img{
+    max-height:65px;
+}
+
+.feedback{
+    font-size:80px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<!-- SPLASH SCREEN -->
+
+<div id="splash" class="slide active">
+    <img src="assets/innovine-logo.png" alt="Innovine Logo">
+</div>
+
+<!-- GAME SCREEN -->
+
+<div id="game" class="slide">
+
+<div class="title">
+Identify the given object and put them in the correct season.
+</div>
+
+<div class="seasons">
+
+<div class="season-box rainy" data-season="rainy">
+    <img src="assets/rainyseason.png">
+    <h3>Rainy Season</h3>
+    <div class="answer-area" id="rainyArea"></div>
+</div>
+
+<div class="season-box winter" data-season="winter">
+    <img src="assets/winterseason.png">
+    <h3>Winter Season</h3>
+    <div class="answer-area" id="winterArea"></div>
+</div>
+
+<div class="season-box summer" data-season="summer">
+    <img src="assets/summerseason.png">
+    <h3>Summer Season</h3>
+    <div class="answer-area" id="summerArea"></div>
+</div>
+
+</div>
+
+<div class="objects">
+
+<div class="object" data-item="socks" data-answer="winter">
+<img src="assets/socks.png">
+</div>
+
+<div class="object" data-item="juice" data-answer="summer">
+<img src="assets/juice.png">
+</div>
+
+<div class="object" data-item="umbrella" data-answer="rainy">
+<img src="assets/umbrella.png">
+</div>
+
+<div class="object" data-item="raincoat" data-answer="rainy">
+<img src="assets/raincoat.png">
+</div>
+
+<div class="object" data-item="sweater" data-answer="winter">
+<img src="assets/sweater.png">
+</div>
+
+<div class="object" data-item="sunglasses" data-answer="summer">
+<img src="assets/sunglasses.png">
+</div>
+
+</div>
+
+</div>
+
+<!-- FINISH SCREEN -->
+
+<div id="finish" class="slide">
+    <h1>Amazing! 🎉</h1>
+</div>
+
+<div class="feedback" id="feedback"></div>
+
+<audio id="wrongSound" src="assets/wrong.mp3"></audio>
+
+<script>
+
+let selectedObject=null;
+let completed=0;
+
+setTimeout(()=>{
+    document.getElementById("splash").classList.remove("active");
+    document.getElementById("game").classList.add("active");
+},3000);
+
+/* SELECT OBJECT */
+
+document.querySelectorAll(".object").forEach(obj=>{
+
+    obj.addEventListener("click",()=>{
+
+        document.querySelectorAll(".object")
+        .forEach(o=>o.classList.remove("selected"));
+
+        obj.classList.add("selected");
+        selectedObject=obj;
+    });
+
+});
+
+/* SEASON CLICK */
+
+document.querySelectorAll(".season-box").forEach(box=>{
+
+    box.addEventListener("click",()=>{
+
+        if(!selectedObject) return;
+
+        const answer=selectedObject.dataset.answer;
+        const chosen=box.dataset.season;
+
+        if(answer===chosen){
+
+            showFeedback("✅");
+
+            const img=selectedObject.querySelector("img").cloneNode(true);
+
+            if(chosen==="rainy"){
+                rainyArea.appendChild(img);
+            }
+
+            if(chosen==="winter"){
+                winterArea.appendChild(img);
+            }
+
+            if(chosen==="summer"){
+                summerArea.appendChild(img);
+            }
+
+            selectedObject.remove();
+            selectedObject=null;
+
+            completed++;
+
+            if(completed===6){
+
+                setTimeout(()=>{
+                    document.getElementById("game").classList.remove("active");
+                    document.getElementById("finish").classList.add("active");
+                    createSnow();
+                },1200);
+            }
+
+        }else{
+
+            showFeedback("❌");
+            document.getElementById("wrongSound").play();
+
+        }
+
+    });
+
+});
+
+function showFeedback(symbol){
+
+    const fb=document.getElementById("feedback");
+
+    fb.innerHTML=symbol;
+    fb.style.display="block";
+
+    setTimeout(()=>{
+        fb.style.display="none";
+    },1000);
+}
+
+/* SNOW EFFECT */
+
+function createSnow(){
+
+    for(let i=0;i<80;i++){
+
+        let snow=document.createElement("div");
+
+        snow.className="snow";
+        snow.innerHTML="❄";
+
+        snow.style.left=Math.random()*100+"%";
+        snow.style.animationDuration=
+        (3+Math.random()*5)+"s";
+
+        snow.style.opacity=Math.random();
+
+        document.getElementById("finish")
+        .appendChild(snow);
+    }
+}
+
+</script>
+
+</body>
+</html>
