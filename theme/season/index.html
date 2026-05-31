@@ -94,30 +94,32 @@ box-shadow:0 3px 12px rgba(0,0,0,.15);
 cursor:pointer;
 }
 
-/* IMPORTANT PART */
-/* Image now fills the entire top area */
+/* FULL SIZE SEASON IMAGE */
 
 .seasonImage{
-height:62%;
+height:64%;
 width:100%;
 padding:0;
 margin:0;
 overflow:hidden;
-display:block;
+flex-shrink:0;
 line-height:0;
 }
 
 .seasonImage img{
+display:block;
 width:100%;
 height:100%;
-display:block;
 object-fit:fill;
+margin:0;
+padding:0;
+border:none;
 }
 
 /* Drop Area */
 
 .dropArea{
-height:38%;
+height:36%;
 background:#ffffff;
 display:flex;
 flex-wrap:wrap;
@@ -277,13 +279,9 @@ height:45px;
 
 <body>
 
-<!-- INTRO SCREEN -->
-
 <div id="intro" class="screen active">
 <img src="assets/innovine-logo.png" alt="Innovine Logo">
 </div>
-
-<!-- GAME SCREEN -->
 
 <div id="game" class="screen">
 
@@ -293,45 +291,28 @@ Identify the given object and put them in the correct season.
 
 <div class="seasons">
 
-<!-- Rainy -->
-
 <div class="seasonCard" data-season="rainy">
-
 <div class="seasonImage">
 <img src="assets/rainyseason.png" alt="rainy season">
 </div>
-
 <div class="dropArea" id="rainyArea"></div>
-
 </div>
 
-<!-- Winter -->
-
 <div class="seasonCard" data-season="winter">
-
 <div class="seasonImage">
 <img src="assets/winterseason.png" alt="winter season">
 </div>
-
 <div class="dropArea" id="winterArea"></div>
-
 </div>
 
-<!-- Summer -->
-
 <div class="seasonCard" data-season="summer">
-
 <div class="seasonImage">
 <img src="assets/summerseason.png" alt="summer season">
 </div>
-
 <div class="dropArea" id="summerArea"></div>
-
 </div>
 
 </div>
-
-<!-- Objects -->
 
 <div class="objects">
 
@@ -369,8 +350,6 @@ Identify the given object and put them in the correct season.
 
 </div>
 
-<!-- COMPLETE SCREEN -->
-
 <div id="complete" class="screen">
 <h1>Amazing!</h1>
 </div>
@@ -382,16 +361,12 @@ Identify the given object and put them in the correct season.
 
 <script>
 
-/* Intro */
-
 setTimeout(()=>{
 
 document.getElementById("intro").classList.remove("active");
 document.getElementById("game").classList.add("active");
 
 },3000);
-
-/* Answers */
 
 const answers={
 socks:"winter",
@@ -404,8 +379,6 @@ sweater:"winter"
 
 let selectedObject=null;
 let score=0;
-
-/* Select Object */
 
 document.querySelectorAll(".object").forEach(item=>{
 
@@ -421,8 +394,6 @@ item.classList.add("selected");
 });
 
 });
-
-/* Select Season */
 
 document.querySelectorAll(".seasonCard").forEach(card=>{
 
@@ -443,8 +414,7 @@ const targetArea=document.getElementById(chosenSeason+"Area");
 const placed=document.createElement("div");
 placed.className="matchedItem";
 
-placed.innerHTML=
-`<img src="${selectedObject.querySelector('img').src}">`;
+placed.innerHTML=`<img src="${selectedObject.querySelector('img').src}">`;
 
 targetArea.appendChild(placed);
 
@@ -454,9 +424,7 @@ selectedObject.style.pointerEvents="none";
 score++;
 
 if(score===6){
-
 setTimeout(showComplete,1000);
-
 }
 
 }else{
@@ -476,12 +444,9 @@ selectedObject=null;
 
 });
 
-/* Feedback */
-
 function showTick(){
 
 const tick=document.getElementById("tick");
-
 tick.style.display="block";
 
 setTimeout(()=>{
@@ -493,7 +458,6 @@ tick.style.display="none";
 function showCross(){
 
 const cross=document.getElementById("cross");
-
 cross.style.display="block";
 
 setTimeout(()=>{
@@ -501,8 +465,6 @@ cross.style.display="none";
 },700);
 
 }
-
-/* Correct Sound */
 
 function playCorrectSound(){
 
@@ -527,8 +489,6 @@ osc.stop(ctx.currentTime+0.2);
 }catch(e){}
 
 }
-
-/* Completion */
 
 function showComplete(){
 
