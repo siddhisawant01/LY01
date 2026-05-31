@@ -4,498 +4,501 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Seasons Sorting Game</title>
+<title>Seasons Matching Game</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    -webkit-tap-highlight-color: transparent;
+    font-family:Arial Rounded MT Bold, Arial, sans-serif;
 }
 
 html,body{
     width:100%;
     height:100%;
     overflow:hidden;
-    font-family:"Arial Rounded MT Bold", Arial, sans-serif;
 }
 
 body{
     background:#fff;
 }
 
-/* ---------- SLIDES ---------- */
+/* ---------------- SCREENS ---------------- */
 
-.slide{
+.screen{
     position:absolute;
     inset:0;
-    width:100%;
-    height:100%;
-    transition:opacity .6s ease;
+    display:none;
 }
 
-.hidden{
-    opacity:0;
-    pointer-events:none;
-}
-
-/* ---------- INTRO ---------- */
-
-#intro{
-    background:#ffffff;
+.screen.active{
     display:flex;
+}
+
+/* ---------------- SPLASH ---------------- */
+
+#splash{
+    background:white;
     justify-content:center;
     align-items:center;
 }
 
-#intro img{
-    width:min(55vw,320px);
-    max-width:320px;
+#splash img{
+    width:min(500px,70vw);
+    max-height:60vh;
     object-fit:contain;
 }
 
-/* ---------- GAME ---------- */
+/* ---------------- GAME ---------------- */
 
 #game{
-    background:url('assets/game_bg.jpg') center center/cover no-repeat;
-    display:flex;
     flex-direction:column;
     padding:1vh;
+    background:
+    linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,.15)),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200");
+    background-size:cover;
+    background-position:center;
 }
 
 .instruction{
-    text-align:center;
-    font-size:clamp(18px,2vw,34px);
-    font-weight:bold;
-    color:#ffffff;
-    text-shadow:2px 2px 4px rgba(0,0,0,.5);
-    margin-bottom:1vh;
-    padding:.5vh;
-}
-
-.main-area{
-    flex:1;
+    height:10%;
     display:flex;
-    flex-direction:column;
-    gap:1vh;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    font-size:clamp(18px,2vw,32px);
+    font-weight:bold;
+    color:#222;
+    background:rgba(255,255,255,.85);
+    border-radius:20px;
+    margin-bottom:1vh;
 }
 
-/* ---------- SEASON TARGETS ---------- */
+/* ---------------- SEASONS ---------------- */
 
 .seasons{
-    height:54%;
-    display:flex;
+    height:48%;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
     gap:1vw;
 }
 
 .season{
-    flex:1;
-    border:4px solid rgba(255,255,255,.85);
-    border-radius:22px;
-    background-size:cover;
-    background-position:center;
-    position:relative;
+    background:white;
+    border:4px solid white;
+    border-radius:20px;
     overflow:hidden;
+    position:relative;
+    box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+
+.season img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.dropArea{
+    position:absolute;
+    inset:0;
     display:flex;
     flex-wrap:wrap;
     align-content:flex-start;
     justify-content:center;
-    padding:8px;
-    cursor:pointer;
-    transition:.2s;
+    padding:5px;
 }
 
-.season:hover{
-    transform:scale(1.01);
+.matched{
+    width:70px;
+    height:70px;
+    background:white;
+    border-radius:12px;
+    margin:4px;
+    padding:4px;
 }
 
-.rainy{
-    background-image:url('assets/rainy_bg.png');
+.matched img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
 }
 
-.winter{
-    background-image:url('assets/winter_bg.png');
-}
-
-.summer{
-    background-image:url('assets/summer_bg.png');
-}
-
-/* ---------- OBJECTS ---------- */
+/* ---------------- OBJECTS ---------------- */
 
 .objects{
     height:42%;
     display:grid;
     grid-template-columns:repeat(6,1fr);
     gap:.8vw;
+    margin-top:1vh;
 }
 
 .object{
-    background:linear-gradient(135deg,#fff6b7,#ffd9f7);
+    background:linear-gradient(135deg,#ffef9f,#ffd5f0);
     border-radius:18px;
     display:flex;
     flex-direction:column;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     cursor:pointer;
-    border:3px solid #ffffff;
-    transition:.25s;
-    user-select:none;
-    box-shadow:0 4px 10px rgba(0,0,0,.18);
+    border:3px solid transparent;
+    transition:.2s;
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
 }
 
-.object:hover{
-    transform:translateY(-2px);
-}
-
-.object.selected{
-    border:4px solid #00ff7b;
-    transform:scale(1.05);
-    animation:pulse .8s infinite;
-}
-
-@keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(0,255,123,.7);}
-    70%{box-shadow:0 0 0 15px rgba(0,255,123,0);}
-    100%{box-shadow:0 0 0 0 rgba(0,255,123,0);}
-}
-
-.icon{
-    font-size:clamp(22px,4vw,52px);
+.object img{
+    width:65%;
+    height:65%;
+    object-fit:contain;
 }
 
 .label{
-    margin-top:4px;
-    font-size:clamp(12px,1.2vw,18px);
+    font-size:clamp(12px,1vw,18px);
     font-weight:bold;
     color:#333;
-    text-align:center;
-    padding:0 2px;
 }
 
-/* ---------- MATCHED ITEMS ---------- */
-
-.matched{
-    width:80px;
-    height:80px;
-    margin:5px;
-    background:rgba(255,255,255,.9);
-    border-radius:14px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    font-size:14px;
-    font-weight:bold;
+.selected{
+    border:5px solid #00a2ff;
+    transform:scale(1.05);
 }
 
-/* ---------- FEEDBACK ---------- */
+.hidden{
+    display:none;
+}
+
+/* ---------------- POPUPS ---------------- */
 
 .feedback{
     position:fixed;
-    inset:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:min(20vw,180px);
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:120px;
     font-weight:bold;
+    display:none;
     z-index:999;
-    opacity:0;
-    pointer-events:none;
+    animation:pop .8s;
 }
 
-.feedback.show{
-    animation:popup .8s forwards;
+.tick{
+    color:#00cc44;
 }
 
-.success{
-    color:#00d84f;
+.cross{
+    color:red;
 }
 
-.fail{
-    color:#ff3333;
-}
-
-@keyframes popup{
+@keyframes pop{
     0%{
+        transform:translate(-50%,-50%) scale(.2);
         opacity:0;
-        transform:scale(.2);
-    }
-    30%{
-        opacity:1;
-        transform:scale(1.2);
     }
     100%{
-        opacity:0;
-        transform:scale(1);
+        transform:translate(-50%,-50%) scale(1);
+        opacity:1;
     }
 }
 
-/* ---------- COMPLETION ---------- */
+/* ---------------- COMPLETION SCREEN ---------------- */
 
-.complete-screen{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,.75);
-    display:none;
+#complete{
+    flex-direction:column;
     justify-content:center;
     align-items:center;
-    flex-direction:column;
-    color:#fff;
-    z-index:1000;
+    background:linear-gradient(135deg,#6ec6ff,#d7f2ff);
+    overflow:hidden;
 }
 
-.complete-screen h1{
-    font-size:clamp(30px,5vw,70px);
+#complete h1{
+    font-size:clamp(50px,8vw,110px);
+    color:white;
+    text-shadow:4px 4px 8px rgba(0,0,0,.25);
 }
 
-.complete-screen p{
-    font-size:clamp(18px,2vw,28px);
-    margin-top:10px;
+.snow{
+    position:absolute;
+    top:-20px;
+    color:white;
+    animation:fall linear infinite;
 }
 
-/* ---------- MOBILE ---------- */
+@keyframes fall{
+    to{
+        transform:translateY(110vh);
+    }
+}
 
 @media(max-width:900px){
 
-    .objects{
-        grid-template-columns:repeat(3,1fr);
-        grid-template-rows:repeat(2,1fr);
-    }
-
-    .matched{
-        width:58px;
-        height:58px;
-        font-size:11px;
-    }
+.objects{
+    grid-template-columns:repeat(3,1fr);
+    height:42%;
 }
+
+.matched{
+    width:55px;
+    height:55px;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
+<!-- SPLASH -->
 
-<div id="intro" class="slide">
-    <img src="assets/innovine_logo.png" alt="Innovine Logo">
+<div id="splash" class="screen active">
+    <img src="assets/innovine_logo.png">
 </div>
 
 <!-- GAME -->
 
-<div id="game" class="slide hidden">
+<div id="game" class="screen">
 
-    <div class="instruction">
-        Identify the given object and put them in the correct season.
-    </div>
+<div class="instruction">
+Identify the given object and put them in the correct season.
+</div>
 
-    <div class="main-area">
+<div class="seasons">
 
-        <div class="seasons">
+<div class="season" data-season="rainy">
+<img src="assets/rainyseason.png">
+<div class="dropArea" id="rainy"></div>
+</div>
 
-            <div class="season rainy" data-season="rainy"></div>
+<div class="season" data-season="winter">
+<img src="assets/winterseason.png">
+<div class="dropArea" id="winter"></div>
+</div>
 
-            <div class="season winter" data-season="winter"></div>
-
-            <div class="season summer" data-season="summer"></div>
-
-        </div>
-
-        <div class="objects" id="objectsContainer">
-
-            <div class="object" data-name="Socks" data-season="winter">
-                <div class="icon">🧦</div>
-                <div class="label">Socks</div>
-            </div>
-
-            <div class="object" data-name="Juice" data-season="summer">
-                <div class="icon">🧃</div>
-                <div class="label">Juice</div>
-            </div>
-
-            <div class="object" data-name="Sunglasses" data-season="summer">
-                <div class="icon">🕶️</div>
-                <div class="label">Sunglasses</div>
-            </div>
-
-            <div class="object" data-name="Umbrella" data-season="rainy">
-                <div class="icon">☂️</div>
-                <div class="label">Umbrella</div>
-            </div>
-
-            <div class="object" data-name="Raincoat" data-season="rainy">
-                <div class="icon">🧥</div>
-                <div class="label">Raincoat</div>
-            </div>
-
-            <div class="object" data-name="Sweater" data-season="winter">
-                <div class="icon">🧶</div>
-                <div class="label">Sweater</div>
-            </div>
-
-        </div>
-
-    </div>
+<div class="season" data-season="summer">
+<img src="assets/summerseason.png">
+<div class="dropArea" id="summer"></div>
+</div>
 
 </div>
 
-<div id="feedback" class="feedback"></div>
+<div class="objects">
 
-<div class="complete-screen" id="completeScreen">
-    <h1>🎉 Excellent! 🎉</h1>
-    <p>All objects matched correctly.</p>
+<div class="object" data-item="socks">
+<img src="assets/socks.png">
+<div class="label">Socks</div>
 </div>
+
+<div class="object" data-item="juice">
+<img src="assets/juice.png">
+<div class="label">Juice</div>
+</div>
+
+<div class="object" data-item="sunglasses">
+<img src="assets/sunglasses.png">
+<div class="label">Sunglasses</div>
+</div>
+
+<div class="object" data-item="umbrella">
+<img src="assets/umbrella.png">
+<div class="label">Umbrella</div>
+</div>
+
+<div class="object" data-item="raincoat">
+<img src="assets/raincoat.png">
+<div class="label">Raincoat</div>
+</div>
+
+<div class="object" data-item="sweater">
+<img src="assets/sweater.png">
+<div class="label">Sweater</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- COMPLETE -->
+
+<div id="complete" class="screen">
+<h1>Amazing!</h1>
+</div>
+
+<div id="tick" class="feedback tick">✓</div>
+<div id="cross" class="feedback cross">✗</div>
+
+<audio id="wrongSound" src="assets/wrong.mp3"></audio>
 
 <script>
 
-/* ---------------- INTRO ---------------- */
+/* ---------------- SPLASH ---------------- */
 
-setTimeout(() => {
-    document.getElementById("intro").classList.add("hidden");
-    document.getElementById("game").classList.remove("hidden");
-}, 3000);
+setTimeout(()=>{
+    document.getElementById("splash").classList.remove("active");
+    document.getElementById("game").classList.add("active");
+},3000);
 
-/* ---------------- GAME ---------------- */
+/* ---------------- ANSWERS ---------------- */
 
-let selectedObject = null;
-let matchedCount = 0;
+const answers={
+    socks:"winter",
+    juice:"summer",
+    sunglasses:"summer",
+    umbrella:"rainy",
+    raincoat:"rainy",
+    sweater:"winter"
+};
 
-const objects = document.querySelectorAll(".object");
-const seasons = document.querySelectorAll(".season");
+let selected=null;
+let matchedCount=0;
 
-/* ---------- AUDIO ---------- */
-
-function playTone(freq,duration){
-
-    const audioContext =
-        new (window.AudioContext || window.webkitAudioContext)();
-
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-
-    osc.type = "sine";
-    osc.frequency.value = freq;
-
-    osc.connect(gain);
-    gain.connect(audioContext.destination);
-
-    osc.start();
-
-    gain.gain.setValueAtTime(0.15,audioContext.currentTime);
-    gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        audioContext.currentTime + duration
-    );
-
-    osc.stop(audioContext.currentTime + duration);
-}
-
-function successSound(){
-    playTone(700,.15);
-    setTimeout(()=>playTone(900,.15),120);
-}
-
-function failSound(){
-    playTone(220,.35);
-}
-
-/* ---------- FEEDBACK ---------- */
-
-function showFeedback(type){
-
-    const feedback = document.getElementById("feedback");
-
-    if(type==="success"){
-        feedback.innerHTML="✔";
-        feedback.className="feedback success show";
-    }else{
-        feedback.innerHTML="✖";
-        feedback.className="feedback fail show";
-    }
-
-    setTimeout(()=>{
-        feedback.className="feedback";
-    },800);
-}
-
-/* ---------- SELECT OBJECT ---------- */
+const objects=document.querySelectorAll(".object");
 
 objects.forEach(item=>{
 
     item.addEventListener("click",()=>{
 
-        document
-            .querySelectorAll(".object")
-            .forEach(obj=>obj.classList.remove("selected"));
+        document.querySelectorAll(".object").forEach(x=>{
+            x.classList.remove("selected");
+        });
 
-        selectedObject=item;
+        selected=item;
         item.classList.add("selected");
+
     });
 
 });
 
-/* ---------- CHOOSE SEASON ---------- */
-
-seasons.forEach(season=>{
+document.querySelectorAll(".season").forEach(season=>{
 
     season.addEventListener("click",()=>{
 
-        if(!selectedObject) return;
+        if(!selected) return;
 
-        const correctSeason =
-            selectedObject.dataset.season;
+        const item=selected.dataset.item;
+        const chosen=season.dataset.season;
 
-        const clickedSeason =
-            season.dataset.season;
+        if(answers[item]===chosen){
 
-        if(correctSeason===clickedSeason){
+            showTick();
+            playCorrect();
 
-            successSound();
-            showFeedback("success");
+            const target=document.getElementById(chosen);
 
-            const icon =
-                selectedObject.querySelector(".icon").innerHTML;
+            const div=document.createElement("div");
+            div.className="matched";
 
-            const label =
-                selectedObject.querySelector(".label").innerHTML;
+            div.innerHTML=
+            `<img src="${selected.querySelector('img').src}">`;
 
-            const matchedItem =
-                document.createElement("div");
+            target.appendChild(div);
 
-            matchedItem.className="matched";
-
-            matchedItem.innerHTML=
-                `<div>${icon}</div>
-                 <div>${label}</div>`;
-
-            season.appendChild(matchedItem);
-
-            selectedObject.remove();
+            selected.classList.add("hidden");
 
             matchedCount++;
 
             if(matchedCount===6){
 
-                setTimeout(()=>{
-                    document
-                    .getElementById("completeScreen")
-                    .style.display="flex";
-                },800);
+                setTimeout(showComplete,1000);
+
             }
 
         }else{
 
-            failSound();
-            showFeedback("fail");
+            showCross();
 
-            selectedObject.classList.remove("selected");
+            document.getElementById("wrongSound").play();
+
         }
 
-        selectedObject=null;
+        selected.classList.remove("selected");
+        selected=null;
 
     });
 
 });
+
+/* ---------------- FEEDBACK ---------------- */
+
+function showTick(){
+
+    const t=document.getElementById("tick");
+
+    t.style.display="block";
+
+    setTimeout(()=>{
+        t.style.display="none";
+    },700);
+
+}
+
+function showCross(){
+
+    const c=document.getElementById("cross");
+
+    c.style.display="block";
+
+    setTimeout(()=>{
+        c.style.display="none";
+    },700);
+
+}
+
+/* ---------------- SUCCESS SOUND ---------------- */
+
+function playCorrect(){
+
+    const audioCtx=
+    new(window.AudioContext||window.webkitAudioContext)();
+
+    const osc=audioCtx.createOscillator();
+    const gain=audioCtx.createGain();
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.frequency.value=700;
+
+    gain.gain.value=.15;
+
+    osc.start();
+
+    osc.stop(audioCtx.currentTime+.2);
+
+}
+
+/* ---------------- COMPLETE SCREEN ---------------- */
+
+function showComplete(){
+
+    document.getElementById("game").classList.remove("active");
+    document.getElementById("complete").classList.add("active");
+
+    createSnow();
+
+}
+
+function createSnow(){
+
+    for(let i=0;i<80;i++){
+
+        const snow=document.createElement("div");
+
+        snow.className="snow";
+        snow.innerHTML="❄";
+
+        snow.style.left=Math.random()*100+"vw";
+        snow.style.fontSize=(15+Math.random()*30)+"px";
+        snow.style.animationDuration=(4+Math.random()*6)+"s";
+
+        document.getElementById("complete")
+        .appendChild(snow);
+
+    }
+
+}
 
 </script>
 
