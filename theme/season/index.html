@@ -6,12 +6,12 @@
 <title>Seasons Game</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:Arial, sans-serif;
--webkit-tap-highlight-color:transparent;
 }
 
 html,body{
@@ -20,149 +20,157 @@ height:100%;
 overflow:hidden;
 }
 
+body{
+background:#fff;
+}
+
+/* =========================
+SLIDES
+========================= */
+
 .slide{
 position:absolute;
 width:100%;
 height:100%;
 top:0;
 left:0;
+}
+
+.hidden{
 display:none;
 }
 
-.active{
+/* =========================
+INTRO
+========================= */
+
+#intro{
 display:flex;
+justify-content:center;
+align-items:center;
+background:white;
 }
 
-/* ---------------- Slide 1 ---------------- */
+#intro img{
+width:300px;
+max-width:80%;
+}
 
-#slide1{
+/* =========================
+GAME SCREEN
+========================= */
+
+#game{
+background:
+radial-gradient(circle at 20% 20%, #ffcf70 0%, transparent 12%),
+radial-gradient(circle at 80% 15%, #ff6fa9 0%, transparent 12%),
+radial-gradient(circle at 10% 80%, #76d7ff 0%, transparent 12%),
+radial-gradient(circle at 90% 75%, #8fff8f 0%, transparent 12%),
+#fff7ef;
+
+display:flex;
+flex-direction:column;
+padding:10px;
+}
+
+.title{
+text-align:center;
+font-weight:bold;
+font-size:clamp(16px,2vw,24px);
+margin-bottom:8px;
+color:#333;
+}
+
+/* top half */
+
+.seasons{
+flex:1;
+display:flex;
+gap:10px;
+justify-content:space-evenly;
+align-items:center;
+}
+
+.season{
+width:31%;
+height:100%;
 background:white;
+border-radius:20px;
+border:4px solid white;
+box-shadow:0 4px 10px rgba(0,0,0,.15);
+position:relative;
+overflow:hidden;
+display:flex;
 justify-content:center;
 align-items:center;
 }
 
-#slide1 img{
-width:40%;
-max-width:300px;
-}
-
-/* ---------------- Slide 2 ---------------- */
-
-#slide2{
-flex-direction:column;
-background:
-linear-gradient(rgba(255,255,255,.88),rgba(255,255,255,.88)),
-url('https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1200');
-background-size:cover;
-background-position:center;
-padding:10px;
-}
-
-.instruction{
-text-align:center;
-font-size:clamp(18px,2.2vw,28px);
-font-weight:bold;
-padding:10px;
-color:#222;
-}
-
-.top-area{
-height:45%;
-display:flex;
-gap:10px;
-}
-
-.bottom-area{
-height:55%;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-grid-template-rows:repeat(2,1fr);
-gap:10px;
-padding-top:10px;
-}
-
-.season-card{
-flex:1;
-border-radius:20px;
-padding:8px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:flex-start;
-position:relative;
-border:4px solid white;
-box-shadow:0 5px 12px rgba(0,0,0,.2);
-overflow:hidden;
-}
-
-.season-card img{
-height:65%;
+.season img{
 width:100%;
-object-fit:contain;
-pointer-events:none;
+height:100%;
+object-fit:cover;
 }
 
-.dropped-items{
+.drop-zone{
+position:absolute;
+bottom:5px;
+left:5px;
+right:5px;
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
-align-items:center;
 gap:4px;
-width:100%;
-height:35%;
 }
 
-.dropped-items img{
-width:50px;
-height:50px;
-object-fit:contain;
+/* bottom half */
+
+.objects{
+flex:0.75;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+margin-top:10px;
 }
 
-.rainy{
-background:linear-gradient(135deg,#7ed6ff,#4fa3ff);
-}
-
-.winter{
-background:linear-gradient(135deg,#cfefff,#ffffff);
-}
-
-.summer{
-background:linear-gradient(135deg,#ffe57f,#ffb347);
-}
-
-.object-card{
+.object{
 background:white;
-border-radius:20px;
+border-radius:15px;
+padding:4px;
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-box-shadow:0 5px 12px rgba(0,0,0,.2);
-border:4px solid #fff;
-padding:5px;
+box-shadow:0 4px 10px rgba(0,0,0,.15);
 cursor:pointer;
 transition:.2s;
 }
 
-.object-card img{
-width:70%;
-height:65%;
+.object.selected{
+transform:scale(1.08);
+border:4px solid #ff9800;
+}
+
+.object img{
+width:55px;
+height:55px;
 object-fit:contain;
-pointer-events:none;
 }
 
-.object-card span{
+.label{
 font-weight:bold;
-font-size:clamp(12px,1.8vw,20px);
-margin-top:5px;
+font-size:13px;
+margin-top:4px;
 }
 
-.selected{
-transform:scale(1.05);
-border:5px solid #ff4081;
+/* success object */
+
+.mini{
+width:45px;
+height:45px;
+object-fit:contain;
 }
 
-/* ---------------- Feedback ---------------- */
+/* feedback */
 
 .feedback{
 position:absolute;
@@ -173,40 +181,44 @@ font-size:120px;
 font-weight:bold;
 display:none;
 z-index:999;
+pointer-events:none;
 }
 
 .correct{
-color:#00c853;
+color:green;
 }
 
 .wrong{
-color:#ff1744;
+color:red;
 }
 
-/* ---------------- Slide 3 ---------------- */
+/* =========================
+FINAL SCREEN
+========================= */
 
-#slide3{
-background:linear-gradient(135deg,#4facfe,#00f2fe);
+#final{
+background:linear-gradient(#89cff0,#ffffff);
+display:flex;
 justify-content:center;
 align-items:center;
 flex-direction:column;
 overflow:hidden;
 }
 
-#amazing{
+.amazing{
 font-size:clamp(40px,8vw,90px);
 font-weight:bold;
-color:white;
-text-shadow:0 0 20px rgba(255,255,255,.8);
-z-index:2;
+color:#0066ff;
+text-shadow:3px 3px white;
+z-index:10;
 }
 
-.snowflake{
+.snow{
 position:absolute;
 top:-20px;
 color:white;
-font-size:20px;
-animation:fall linear forwards;
+font-size:22px;
+animation:fall linear infinite;
 }
 
 @keyframes fall{
@@ -214,74 +226,94 @@ to{
 transform:translateY(110vh);
 }
 }
+
+@media(max-width:768px){
+
+.object img{
+width:45px;
+height:45px;
+}
+
+.label{
+font-size:11px;
+}
+
+.feedback{
+font-size:80px;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- Slide 1 -->
+<!-- INTRO -->
 
-<div id="slide1" class="slide active">
-<img src="assets/innovine-logo.png" alt="Innovine">
+<div id="intro" class="slide">
+<img src="assets/innovine-logo.png">
 </div>
 
-<!-- Slide 2 -->
+<!-- GAME -->
 
-<div id="slide2" class="slide">
+<div id="game" class="slide hidden">
 
-<div class="instruction">
-Identify the given object and put them in the correct season.
+<div class="title">
+Identify the given object and put them in the correct season
 </div>
 
-<div class="top-area">
+<div class="seasons">
 
-<div class="season-card rainy" data-season="rainy">
+<div class="season" data-season="rainy">
 <img src="assets/rainyseason.png">
-<div class="dropped-items"></div>
+<div class="drop-zone" id="rainyZone"></div>
 </div>
 
-<div class="season-card winter" data-season="winter">
+<div class="season" data-season="winter">
 <img src="assets/winterseason.png">
-<div class="dropped-items"></div>
+<div class="drop-zone" id="winterZone"></div>
 </div>
 
-<div class="season-card summer" data-season="summer">
+<div class="season" data-season="summer">
 <img src="assets/summerseason.png">
-<div class="dropped-items"></div>
+<div class="drop-zone" id="summerZone"></div>
 </div>
 
 </div>
 
-<div class="bottom-area">
+<div class="objects">
 
-<div class="object-card" data-answer="winter">
+<div class="object" data-item="socks">
 <img src="assets/socks.png">
-<span>Socks</span>
+<div class="label">Socks</div>
 </div>
 
-<div class="object-card" data-answer="summer">
+<div class="object" data-item="juice">
 <img src="assets/juice.png">
-<span>Juice</span>
+<div class="label">Juice</div>
 </div>
 
-<div class="object-card" data-answer="summer">
+<div class="object" data-item="sunglasses">
 <img src="assets/sunglasses.png">
-<span>Sunglasses</span>
+<div class="label">Sunglasses</div>
 </div>
 
-<div class="object-card" data-answer="rainy">
+<div class="object" data-item="umbrella">
 <img src="assets/umbrella.png">
-<span>Umbrella</span>
+<div class="label">Umbrella</div>
 </div>
 
-<div class="object-card" data-answer="rainy">
+<div class="object" data-item="raincoat">
 <img src="assets/raincoat.png">
-<span>Raincoat</span>
+<div class="label">Raincoat</div>
 </div>
 
-<div class="object-card" data-answer="winter">
+<div class="object" data-item="sweater">
 <img src="assets/sweater.png">
-<span>Sweater</span>
+<div class="label">Sweater</div>
+</div>
+
 </div>
 
 </div>
@@ -289,79 +321,84 @@ Identify the given object and put them in the correct season.
 <div id="tick" class="feedback correct">✓</div>
 <div id="cross" class="feedback wrong">✗</div>
 
-</div>
-
-<!-- Slide 3 -->
-
-<div id="slide3" class="slide">
-<div id="amazing">Amazing!</div>
-</div>
-
 <audio id="wrongSound" src="assets/wrong.mp3"></audio>
+
+<!-- FINAL -->
+
+<div id="final" class="slide hidden">
+<div class="amazing">Amazing!</div>
+</div>
 
 <script>
 
 setTimeout(()=>{
-document.getElementById("slide1").classList.remove("active");
-document.getElementById("slide2").classList.add("active");
+document.getElementById("intro").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
 },3000);
 
-const objects=document.querySelectorAll(".object-card");
-const seasons=document.querySelectorAll(".season-card");
+const answers={
+socks:"winter",
+juice:"summer",
+sunglasses:"summer",
+umbrella:"rainy",
+raincoat:"rainy",
+sweater:"winter"
+};
 
 let selected=null;
 let completed=0;
 
-objects.forEach(item=>{
+document.querySelectorAll(".object").forEach(obj=>{
 
-item.addEventListener("click",()=>{
+obj.addEventListener("click",()=>{
 
-document.querySelectorAll(".object-card").forEach(o=>{
-o.classList.remove("selected");
-});
+document.querySelectorAll(".object").forEach(o=>
+o.classList.remove("selected")
+);
 
-selected=item;
-item.classList.add("selected");
-
-});
+obj.classList.add("selected");
+selected=obj;
 
 });
 
-seasons.forEach(zone=>{
+});
 
-zone.addEventListener("click",()=>{
+document.querySelectorAll(".season").forEach(season=>{
+
+season.addEventListener("click",()=>{
 
 if(!selected) return;
 
-const correct=selected.dataset.answer;
-const chosen=zone.dataset.season;
+const item=selected.dataset.item;
+const chosen=season.dataset.season;
 
-if(correct===chosen){
+if(answers[item]===chosen){
 
 showTick();
 
 const mini=document.createElement("img");
 mini.src=selected.querySelector("img").src;
+mini.className="mini";
 
-zone.querySelector(".dropped-items").appendChild(mini);
+document.getElementById(chosen+"Zone")
+.appendChild(mini);
 
 selected.remove();
 
 selected=null;
-
 completed++;
 
 if(completed===6){
 
-setTimeout(()=>{
-showFinalSlide();
-},1200);
+setTimeout(showFinal,1000);
 
 }
 
 }else{
 
 showCross();
+
+document.getElementById("wrongSound").currentTime=0;
 document.getElementById("wrongSound").play();
 
 }
@@ -372,58 +409,51 @@ document.getElementById("wrongSound").play();
 
 function showTick(){
 
-const tick=document.getElementById("tick");
-
-tick.style.display="block";
+const t=document.getElementById("tick");
+t.style.display="block";
 
 setTimeout(()=>{
-tick.style.display="none";
+t.style.display="none";
 },800);
 
 }
 
 function showCross(){
 
-const cross=document.getElementById("cross");
-
-cross.style.display="block";
+const c=document.getElementById("cross");
+c.style.display="block";
 
 setTimeout(()=>{
-cross.style.display="none";
+c.style.display="none";
 },800);
 
 }
 
-function showFinalSlide(){
+function showFinal(){
 
-document.getElementById("slide2").classList.remove("active");
-document.getElementById("slide3").classList.add("active");
+document.getElementById("game").classList.add("hidden");
+document.getElementById("final").classList.remove("hidden");
 
-createSnow();
+for(let i=0;i<60;i++){
 
-}
+let snow=document.createElement("div");
 
-function createSnow(){
-
-setInterval(()=>{
-
-const snow=document.createElement("div");
-
-snow.className="snowflake";
+snow.className="snow";
 snow.innerHTML="❄";
 
-snow.style.left=Math.random()*100+"vw";
-snow.style.animationDuration=(Math.random()*3+2)+"s";
+snow.style.left=Math.random()*100+"%";
+snow.style.animationDuration=
+(Math.random()*5+3)+"s";
 
-document.getElementById("slide3").appendChild(snow);
+snow.style.opacity=Math.random();
 
-setTimeout(()=>{
-snow.remove();
-},5000);
-
-},150);
+document.getElementById("final")
+.appendChild(snow);
 
 }
+
+}
+
 </script>
 
 </body>
