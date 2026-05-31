@@ -7,218 +7,211 @@
 
 <style>
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+-webkit-tap-highlight-color:transparent;
 }
 
 html,body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-}
-
-body{
-    background:#fff6fb;
+width:100%;
+height:100%;
+overflow:hidden;
 }
 
 .slide{
-    width:100%;
-    height:100vh;
-    display:none;
+position:absolute;
+width:100%;
+height:100%;
+top:0;
+left:0;
+display:none;
 }
 
 .active{
-    display:flex;
+display:flex;
 }
 
-/* ---------------- SPLASH ---------------- */
+/* ---------------- Slide 1 ---------------- */
 
-#splash{
-    justify-content:center;
-    align-items:center;
-    background:white;
+#slide1{
+background:white;
+justify-content:center;
+align-items:center;
 }
 
-#splash img{
-    width:300px;
-    max-width:80%;
+#slide1 img{
+width:40%;
+max-width:300px;
 }
 
-/* ---------------- GAME ---------------- */
+/* ---------------- Slide 2 ---------------- */
 
-#game{
-    flex-direction:column;
-    padding:8px;
-    background:
-    linear-gradient(135deg,#ffe0f0,#dff7ff,#fff7c7);
+#slide2{
+flex-direction:column;
+background:
+linear-gradient(rgba(255,255,255,.88),rgba(255,255,255,.88)),
+url('https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1200');
+background-size:cover;
+background-position:center;
+padding:10px;
 }
 
-.title{
-    text-align:center;
-    font-size:clamp(16px,2vw,28px);
-    font-weight:bold;
-    margin-bottom:8px;
+.instruction{
+text-align:center;
+font-size:clamp(18px,2.2vw,28px);
+font-weight:bold;
+padding:10px;
+color:#222;
 }
 
-.seasons{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    height:42%;
+.top-area{
+height:45%;
+display:flex;
+gap:10px;
 }
 
-.season-box{
-    flex:1;
-    border-radius:20px;
-    padding:8px;
-    text-align:center;
-    border:4px solid white;
-    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+.bottom-area{
+height:55%;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+grid-template-rows:repeat(2,1fr);
+gap:10px;
+padding-top:10px;
 }
 
-.season-box img{
-    width:100%;
-    height:65%;
-    object-fit:contain;
-    border-radius:15px;
-    background:white;
+.season-card{
+flex:1;
+border-radius:20px;
+padding:8px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:flex-start;
+position:relative;
+border:4px solid white;
+box-shadow:0 5px 12px rgba(0,0,0,.2);
+overflow:hidden;
 }
 
-.season-box h3{
-    margin-top:5px;
-    color:#fff;
-    font-size:18px;
+.season-card img{
+height:65%;
+width:100%;
+object-fit:contain;
+pointer-events:none;
+}
+
+.dropped-items{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+align-items:center;
+gap:4px;
+width:100%;
+height:35%;
+}
+
+.dropped-items img{
+width:50px;
+height:50px;
+object-fit:contain;
 }
 
 .rainy{
-    background:#59c3ff;
+background:linear-gradient(135deg,#7ed6ff,#4fa3ff);
 }
 
 .winter{
-    background:#b490ff;
+background:linear-gradient(135deg,#cfefff,#ffffff);
 }
 
 .summer{
-    background:#ffb347;
+background:linear-gradient(135deg,#ffe57f,#ffb347);
 }
 
-.answer-area{
-    min-height:70px;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:5px;
-    margin-top:5px;
+.object-card{
+background:white;
+border-radius:20px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+box-shadow:0 5px 12px rgba(0,0,0,.2);
+border:4px solid #fff;
+padding:5px;
+cursor:pointer;
+transition:.2s;
 }
 
-.answer-area img{
-    width:50px;
-    height:50px;
-    object-fit:contain;
+.object-card img{
+width:70%;
+height:65%;
+object-fit:contain;
+pointer-events:none;
 }
 
-/* OBJECTS */
-
-.objects{
-    margin-top:10px;
-    flex:1;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
+.object-card span{
+font-weight:bold;
+font-size:clamp(12px,1.8vw,20px);
+margin-top:5px;
 }
 
-.object{
-    background:white;
-    border-radius:18px;
-    padding:6px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border:3px solid #ffd4ec;
-    box-shadow:0 4px 8px rgba(0,0,0,.15);
-    cursor:pointer;
+.selected{
+transform:scale(1.05);
+border:5px solid #ff4081;
 }
 
-.object.selected{
-    border:5px solid #00bfff;
-}
-
-.object img{
-    width:100%;
-    height:100%;
-    max-height:90px;
-    object-fit:contain;
-}
-
-/* POPUP */
+/* ---------------- Feedback ---------------- */
 
 .feedback{
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    font-size:120px;
-    z-index:999;
-    display:none;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:120px;
+font-weight:bold;
+display:none;
+z-index:999;
 }
 
-/* FINISH */
-
-#finish{
-    position:relative;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    background:linear-gradient(#7dcfff,#ffffff);
+.correct{
+color:#00c853;
 }
 
-#finish h1{
-    font-size:60px;
-    color:#0c75ff;
-    text-shadow:3px 3px white;
-    z-index:2;
+.wrong{
+color:#ff1744;
 }
 
-.snow{
-    position:absolute;
-    top:-10px;
-    color:white;
-    font-size:24px;
-    animation:fall linear infinite;
+/* ---------------- Slide 3 ---------------- */
+
+#slide3{
+background:linear-gradient(135deg,#4facfe,#00f2fe);
+justify-content:center;
+align-items:center;
+flex-direction:column;
+overflow:hidden;
+}
+
+#amazing{
+font-size:clamp(40px,8vw,90px);
+font-weight:bold;
+color:white;
+text-shadow:0 0 20px rgba(255,255,255,.8);
+z-index:2;
+}
+
+.snowflake{
+position:absolute;
+top:-20px;
+color:white;
+font-size:20px;
+animation:fall linear forwards;
 }
 
 @keyframes fall{
-    from{
-        transform:translateY(-10px);
-    }
-    to{
-        transform:translateY(110vh);
-    }
-}
-
-@media(max-width:768px){
-
-.title{
-    font-size:18px;
-}
-
-.season-box h3{
-    font-size:14px;
-}
-
-.answer-area img{
-    width:38px;
-    height:38px;
-}
-
-.object img{
-    max-height:65px;
-}
-
-.feedback{
-    font-size:80px;
+to{
+transform:translateY(110vh);
 }
 }
 </style>
@@ -226,195 +219,211 @@ body{
 
 <body>
 
-<!-- SPLASH SCREEN -->
+<!-- Slide 1 -->
 
-<div id="splash" class="slide active">
-    <img src="assets/innovine-logo.png" alt="Innovine Logo">
+<div id="slide1" class="slide active">
+<img src="assets/innovine-logo.png" alt="Innovine">
 </div>
 
-<!-- GAME SCREEN -->
+<!-- Slide 2 -->
 
-<div id="game" class="slide">
+<div id="slide2" class="slide">
 
-<div class="title">
+<div class="instruction">
 Identify the given object and put them in the correct season.
 </div>
 
-<div class="seasons">
+<div class="top-area">
 
-<div class="season-box rainy" data-season="rainy">
-    <img src="assets/rainyseason.png">
-    <h3>Rainy Season</h3>
-    <div class="answer-area" id="rainyArea"></div>
+<div class="season-card rainy" data-season="rainy">
+<img src="assets/rainyseason.png">
+<div class="dropped-items"></div>
 </div>
 
-<div class="season-box winter" data-season="winter">
-    <img src="assets/winterseason.png">
-    <h3>Winter Season</h3>
-    <div class="answer-area" id="winterArea"></div>
+<div class="season-card winter" data-season="winter">
+<img src="assets/winterseason.png">
+<div class="dropped-items"></div>
 </div>
 
-<div class="season-box summer" data-season="summer">
-    <img src="assets/summerseason.png">
-    <h3>Summer Season</h3>
-    <div class="answer-area" id="summerArea"></div>
+<div class="season-card summer" data-season="summer">
+<img src="assets/summerseason.png">
+<div class="dropped-items"></div>
 </div>
 
 </div>
 
-<div class="objects">
+<div class="bottom-area">
 
-<div class="object" data-item="socks" data-answer="winter">
+<div class="object-card" data-answer="winter">
 <img src="assets/socks.png">
+<span>Socks</span>
 </div>
 
-<div class="object" data-item="juice" data-answer="summer">
+<div class="object-card" data-answer="summer">
 <img src="assets/juice.png">
+<span>Juice</span>
 </div>
 
-<div class="object" data-item="umbrella" data-answer="rainy">
-<img src="assets/umbrella.png">
-</div>
-
-<div class="object" data-item="raincoat" data-answer="rainy">
-<img src="assets/raincoat.png">
-</div>
-
-<div class="object" data-item="sweater" data-answer="winter">
-<img src="assets/sweater.png">
-</div>
-
-<div class="object" data-item="sunglasses" data-answer="summer">
+<div class="object-card" data-answer="summer">
 <img src="assets/sunglasses.png">
+<span>Sunglasses</span>
+</div>
+
+<div class="object-card" data-answer="rainy">
+<img src="assets/umbrella.png">
+<span>Umbrella</span>
+</div>
+
+<div class="object-card" data-answer="rainy">
+<img src="assets/raincoat.png">
+<span>Raincoat</span>
+</div>
+
+<div class="object-card" data-answer="winter">
+<img src="assets/sweater.png">
+<span>Sweater</span>
 </div>
 
 </div>
 
+<div id="tick" class="feedback correct">✓</div>
+<div id="cross" class="feedback wrong">✗</div>
+
 </div>
 
-<!-- FINISH SCREEN -->
+<!-- Slide 3 -->
 
-<div id="finish" class="slide">
-    <h1>Amazing! 🎉</h1>
+<div id="slide3" class="slide">
+<div id="amazing">Amazing!</div>
 </div>
-
-<div class="feedback" id="feedback"></div>
 
 <audio id="wrongSound" src="assets/wrong.mp3"></audio>
 
 <script>
 
-let selectedObject=null;
-let completed=0;
-
 setTimeout(()=>{
-    document.getElementById("splash").classList.remove("active");
-    document.getElementById("game").classList.add("active");
+document.getElementById("slide1").classList.remove("active");
+document.getElementById("slide2").classList.add("active");
 },3000);
 
-/* SELECT OBJECT */
+const objects=document.querySelectorAll(".object-card");
+const seasons=document.querySelectorAll(".season-card");
 
-document.querySelectorAll(".object").forEach(obj=>{
+let selected=null;
+let completed=0;
 
-    obj.addEventListener("click",()=>{
+objects.forEach(item=>{
 
-        document.querySelectorAll(".object")
-        .forEach(o=>o.classList.remove("selected"));
+item.addEventListener("click",()=>{
 
-        obj.classList.add("selected");
-        selectedObject=obj;
-    });
+document.querySelectorAll(".object-card").forEach(o=>{
+o.classList.remove("selected");
+});
+
+selected=item;
+item.classList.add("selected");
 
 });
 
-/* SEASON CLICK */
-
-document.querySelectorAll(".season-box").forEach(box=>{
-
-    box.addEventListener("click",()=>{
-
-        if(!selectedObject) return;
-
-        const answer=selectedObject.dataset.answer;
-        const chosen=box.dataset.season;
-
-        if(answer===chosen){
-
-            showFeedback("✅");
-
-            const img=selectedObject.querySelector("img").cloneNode(true);
-
-            if(chosen==="rainy"){
-                rainyArea.appendChild(img);
-            }
-
-            if(chosen==="winter"){
-                winterArea.appendChild(img);
-            }
-
-            if(chosen==="summer"){
-                summerArea.appendChild(img);
-            }
-
-            selectedObject.remove();
-            selectedObject=null;
-
-            completed++;
-
-            if(completed===6){
-
-                setTimeout(()=>{
-                    document.getElementById("game").classList.remove("active");
-                    document.getElementById("finish").classList.add("active");
-                    createSnow();
-                },1200);
-            }
-
-        }else{
-
-            showFeedback("❌");
-            document.getElementById("wrongSound").play();
-
-        }
-
-    });
-
 });
 
-function showFeedback(symbol){
+seasons.forEach(zone=>{
 
-    const fb=document.getElementById("feedback");
+zone.addEventListener("click",()=>{
 
-    fb.innerHTML=symbol;
-    fb.style.display="block";
+if(!selected) return;
 
-    setTimeout(()=>{
-        fb.style.display="none";
-    },1000);
+const correct=selected.dataset.answer;
+const chosen=zone.dataset.season;
+
+if(correct===chosen){
+
+showTick();
+
+const mini=document.createElement("img");
+mini.src=selected.querySelector("img").src;
+
+zone.querySelector(".dropped-items").appendChild(mini);
+
+selected.remove();
+
+selected=null;
+
+completed++;
+
+if(completed===6){
+
+setTimeout(()=>{
+showFinalSlide();
+},1200);
+
 }
 
-/* SNOW EFFECT */
+}else{
+
+showCross();
+document.getElementById("wrongSound").play();
+
+}
+
+});
+
+});
+
+function showTick(){
+
+const tick=document.getElementById("tick");
+
+tick.style.display="block";
+
+setTimeout(()=>{
+tick.style.display="none";
+},800);
+
+}
+
+function showCross(){
+
+const cross=document.getElementById("cross");
+
+cross.style.display="block";
+
+setTimeout(()=>{
+cross.style.display="none";
+},800);
+
+}
+
+function showFinalSlide(){
+
+document.getElementById("slide2").classList.remove("active");
+document.getElementById("slide3").classList.add("active");
+
+createSnow();
+
+}
 
 function createSnow(){
 
-    for(let i=0;i<80;i++){
+setInterval(()=>{
 
-        let snow=document.createElement("div");
+const snow=document.createElement("div");
 
-        snow.className="snow";
-        snow.innerHTML="❄";
+snow.className="snowflake";
+snow.innerHTML="❄";
 
-        snow.style.left=Math.random()*100+"%";
-        snow.style.animationDuration=
-        (3+Math.random()*5)+"s";
+snow.style.left=Math.random()*100+"vw";
+snow.style.animationDuration=(Math.random()*3+2)+"s";
 
-        snow.style.opacity=Math.random();
+document.getElementById("slide3").appendChild(snow);
 
-        document.getElementById("finish")
-        .appendChild(snow);
-    }
+setTimeout(()=>{
+snow.remove();
+},5000);
+
+},150);
+
 }
-
 </script>
 
 </body>
