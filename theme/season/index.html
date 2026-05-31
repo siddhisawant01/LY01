@@ -95,18 +95,20 @@ cursor:pointer;
 /* Season image area */
 
 .seasonImage{
-height:70%;
+.seasonImage{
+height:58%;
 display:flex;
 justify-content:center;
 align-items:center;
-padding:5px;
+padding:10px;
 background:#fff;
-overflow:visible;
 }
 
 .seasonImage img{
-width:100%;
-height:100%;
+max-width:90%;
+max-height:90%;
+width:auto;
+height:auto;
 object-fit:contain;
 }
 
@@ -329,41 +331,21 @@ Identify the given object and put them in the correct season.
 
 </div>
 
-<div class="objects">
+// Shuffle object cards
 
-<div class="object" data-item="socks">
-<img src="assets/socks.png">
-<div class="objectLabel">Socks</div>
-</div>
+const objectsContainer = document.querySelector(".objects");
 
-<div class="object" data-item="juice">
-<img src="assets/juice.png">
-<div class="objectLabel">Juice</div>
-</div>
+const cards = Array.from(objectsContainer.children);
 
-<div class="object" data-item="sunglasses">
-<img src="assets/sunglasses.png">
-<div class="objectLabel">Sunglasses</div>
-</div>
+for(let i = cards.length - 1; i > 0; i--){
 
-<div class="object" data-item="umbrella">
-<img src="assets/umbrella.png">
-<div class="objectLabel">Umbrella</div>
-</div>
+const j = Math.floor(Math.random() * (i + 1));
 
-<div class="object" data-item="raincoat">
-<img src="assets/raincoat.png">
-<div class="objectLabel">Raincoat</div>
-</div>
+[cards[i], cards[j]] = [cards[j], cards[i]];
 
-<div class="object" data-item="sweater">
-<img src="assets/sweater.png">
-<div class="objectLabel">Sweater</div>
-</div>
+}
 
-</div>
-
-</div>
+cards.forEach(card => objectsContainer.appendChild(card));
 
 <!-- SLIDE 3 -->
 
