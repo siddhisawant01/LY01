@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Day and Night Game</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Arial Rounded MT Bold", Arial, sans-serif;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+}
+
+body{
+background:#fff;
+}
+
+.slide{
+position:absolute;
+width:100%;
+height:100%;
+top:0;
+left:0;
+display:none;
+}
+
+.slide.active{
+display:flex;
+}
+
+/* ---------- SLIDE 1 ---------- */
+
+#slide1{
+background:white;
+justify-content:center;
+align-items:center;
+}
+
+#logo{
+max-width:70%;
+max-height:55%;
+object-fit:contain;
+}
+
+/* ---------- SLIDE 2 ---------- */
+
+#slide2{
+flex-direction:column;
+padding:8px;
+background:
+linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.86)),
+url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200');
+background-size:cover;
+background-position:center;
+}
+
+.instruction{
+text-align:center;
+font-weight:bold;
+font-size:clamp(16px,2.5vw,24px);
+color:#4a148c;
+margin-bottom:8px;
+}
+
+.image-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:6px;
+height:44%;
+}
+
+.card{
+background:white;
+border:4px solid;
+border-image:linear-gradient(45deg,#ff4081,#ffeb3b,#00e5ff,#7c4dff) 1;
+border-radius:15px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+padding:3px;
+}
+
+.card.selected{
+transform:scale(1.05);
+box-shadow:0 0 15px gold;
+}
+
+.icon{
+font-size:clamp(30px,5vw,50px);
+}
+
+.label{
+font-size:clamp(12px,1.6vw,18px);
+font-weight:bold;
+text-transform:lowercase;
+margin-top:3px;
+}
+
+.box-area{
+display:flex;
+gap:10px;
+margin-top:8px;
+height:40%;
+}
+
+.drop-box{
+flex:1;
+border-radius:20px;
+border:5px dashed white;
+padding:8px;
+display:flex;
+flex-wrap:wrap;
+align-content:flex-start;
+justify-content:center;
+gap:5px;
+position:relative;
+}
+
+.day{
+background:#fff59d;
+}
+
+.night{
+background:#0d47a1;
+color:white;
+}
+
+.box-title{
+position:absolute;
+top:4px;
+left:50%;
+transform:translateX(-50%);
+font-size:22px;
+font-weight:bold;
+}
+
+.placed{
+font-size:32px;
+}
+
+/* ---------- FEEDBACK ---------- */
+
+.feedback{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:90px;
+display:none;
+z-index:1000;
+pointer-events:none;
+}
+
+.feedback.show{
+display:block;
+animation:pop .6s;
+}
+
+@keyframes pop{
+0%{transform:translate(-50%,-50%) scale(.3);}
+50%{transform:translate(-50%,-50%) scale(1.2);}
+100%{transform:translate(-50%,-50%) scale(1);}
+}
+
+/* ---------- SLIDE 3 ---------- */
+
+#slide3{
+background:linear-gradient(to bottom,#fff8e1,#ffe082);
+justify-content:center;
+align-items:center;
+flex-direction:column;
+overflow:hidden;
+}
+
+.goodjob{
+font-size:clamp(40px,8vw,70px);
+font-weight:bold;
+color:#ff4081;
+z-index:2;
+}
+
+.falling{
+position:absolute;
+font-size:40px;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+from{
+transform:translateY(-100px);
+}
+to{
+transform:translateY(120vh);
+}
+}
+
+@media(max-width:900px){
+
+.image-grid{
+grid-template-columns:repeat(4,1fr);
+}
+
+.icon{
+font-size:28px;
+}
+
+.box-title{
+font-size:18px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SLIDE 1 -->
+
+<div class="slide active" id="slide1">
+<img id="logo" src="assets/innovine-logo.png" alt="Innovine Logo">
+</div>
+
+<!-- SLIDE 2 -->
+
+<div class="slide" id="slide2">
+
+<div class="instruction">
+Identify the given images and put them in the correct box.
+</div>
+
+<div class="image-grid" id="options">
+
+<div class="card" data-answer="night">
+<div class="icon">🌙</div>
+<div class="label">moon</div>
+</div>
+
+<div class="card" data-answer="day">
+<div class="icon">🐓</div>
+<div class="label">rooster</div>
+</div>
+
+<div class="card" data-answer="night">
+<div class="icon">🦇</div>
+<div class="label">bat</div>
+</div>
+
+<div class="card" data-answer="day">
+<div class="icon">☀️</div>
+<div class="label">sun</div>
+</div>
+
+<div class="card" data-answer="night">
+<div class="icon">⭐</div>
+<div class="label">star</div>
+</div>
+
+<div class="card" data-answer="day">
+<div class="icon">🌈</div>
+<div class="label">rainbow</div>
+</div>
+
+<div class="card" data-answer="day">
+<div class="icon">☁️</div>
+<div class="label">clouds</div>
+</div>
+
+<div class="card" data-answer="night">
+<div class="icon">🛏️</div>
+<div class="label">bed</div>
+</div>
+
+</div>
+
+<div class="box-area">
+
+<div class="drop-box day" id="dayBox">
+<div class="box-title">day</div>
+</div>
+
+<div class="drop-box night" id="nightBox">
+<div class="box-title">night</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- SLIDE 3 -->
+
+<div class="slide" id="slide3">
+<div class="goodjob">Good Job! 🎉</div>
+</div>
+
+<div class="feedback" id="feedback"></div>
+
+<audio id="wrongSound" src="assets/wrong.mp3"></audio>
+
+<script>
+
+let selectedCard=null;
+let completed=0;
+
+setTimeout(()=>{
+document.getElementById("slide1").classList.remove("active");
+document.getElementById("slide2").classList.add("active");
+},3000);
+
+document.querySelectorAll(".card").forEach(card=>{
+
+card.addEventListener("click",()=>{
+
+document.querySelectorAll(".card").forEach(c=>c.classList.remove("selected"));
+
+selectedCard=card;
+card.classList.add("selected");
+
+});
+
+});
+
+document.getElementById("dayBox").addEventListener("click",()=>drop("day"));
+document.getElementById("nightBox").addEventListener("click",()=>drop("night"));
+
+function drop(target){
+
+if(!selectedCard) return;
+
+let answer=selectedCard.dataset.answer;
+
+if(answer===target){
+
+let icon=selectedCard.querySelector(".icon").textContent;
+
+let placed=document.createElement("div");
+placed.className="placed";
+placed.textContent=icon;
+
+if(target==="day"){
+document.getElementById("dayBox").appendChild(placed);
+}else{
+document.getElementById("nightBox").appendChild(placed);
+}
+
+selectedCard.remove();
+
+completed++;
+
+showFeedback("✅");
+
+selectedCard=null;
+
+if(completed===8){
+
+setTimeout(()=>{
+showSlide3();
+},1000);
+
+}
+
+}else{
+
+document.getElementById("wrongSound").currentTime=0;
+document.getElementById("wrongSound").play();
+
+showFeedback("❌");
+}
+
+}
+
+function showFeedback(symbol){
+
+const fb=document.getElementById("feedback");
+
+fb.textContent=symbol;
+fb.classList.add("show");
+
+setTimeout(()=>{
+fb.classList.remove("show");
+},600);
+
+}
+
+function showSlide3(){
+
+document.getElementById("slide2").classList.remove("active");
+document.getElementById("slide3").classList.add("active");
+
+const items=["☀️","🌙","⭐","☀️","⭐","🌙","☀️","⭐"];
+
+for(let i=0;i<40;i++){
+
+let obj=document.createElement("div");
+
+obj.className="falling";
+obj.innerHTML=items[Math.floor(Math.random()*items.length)];
+
+obj.style.left=Math.random()*100+"%";
+obj.style.animationDuration=(3+Math.random()*4)+"s";
+obj.style.animationDelay=(Math.random()*2)+"s";
+
+document.getElementById("slide3").appendChild(obj);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
