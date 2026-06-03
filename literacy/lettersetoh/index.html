@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Literacy Ee-Hh Matching Game</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+overflow:hidden;
+background:#fff;
+}
+
+.screen{
+width:100vw;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+position:absolute;
+top:0;
+left:0;
+}
+
+.hidden{
+display:none;
+}
+
+/* Splash Screen */
+#splash{
+background:white;
+}
+
+#logo{
+width:min(50vw,300px);
+max-width:300px;
+}
+
+/* Game Screen */
+#game{
+background:
+radial-gradient(circle at 10% 20%, #ff4fa3 0 8px, transparent 9px),
+radial-gradient(circle at 80% 30%, #ffd500 0 8px, transparent 9px),
+radial-gradient(circle at 30% 70%, #1e88ff 0 8px, transparent 9px),
+radial-gradient(circle at 70% 80%, #ff5722 0 8px, transparent 9px),
+linear-gradient(135deg,#fff5fb,#f3f8ff,#fffef0);
+padding:10px;
+}
+
+h1{
+font-size:clamp(20px,4vw,40px);
+margin-bottom:15px;
+color:#082c5c;
+font-weight:bold;
+text-align:center;
+}
+
+.game-area{
+width:95%;
+max-width:1200px;
+height:80%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:relative;
+}
+
+.column{
+width:42%;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.box{
+height:80px;
+background:white;
+border-radius:25px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+font-size:48px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 5px 12px rgba(0,0,0,0.15);
+position:relative;
+}
+
+.left .box:nth-child(1){border:5px solid #ff6b6b;}
+.left .box:nth-child(2){border:5px solid #ff9800;}
+.left .box:nth-child(3){border:5px solid #2ec4b6;}
+.left .box:nth-child(4){border:5px solid #9c6ade;}
+
+.right .box:nth-child(1){border:5px solid #ff66c4;}
+.right .box:nth-child(2){border:5px solid #4caf90;}
+.right .box:nth-child(3){border:5px solid #5f7f9f;}
+.right .box:nth-child(4){border:5px solid #ff7b2c;}
+
+.emoji{
+font-size:52px;
+}
+
+.selected{
+transform:scale(1.05);
+box-shadow:0 0 15px gold;
+}
+
+.feedback{
+position:fixed;
+font-size:120px;
+z-index:1000;
+animation:pop .7s ease;
+}
+
+@keyframes pop{
+0%{transform:scale(0);}
+100%{transform:scale(1);}
+}
+
+#svgLines{
+position:absolute;
+width:100%;
+height:100%;
+pointer-events:none;
+left:0;
+top:0;
+}
+
+#complete{
+background:linear-gradient(135deg,#ffec99,#ffe3e3,#d0f4de);
+}
+
+#complete h2{
+font-size:clamp(40px,8vw,90px);
+color:#ff4081;
+}
+
+.confetti{
+position:absolute;
+width:12px;
+height:12px;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(720deg);
+}
+}
+
+@media(max-width:768px){
+
+.box{
+height:65px;
+font-size:34px;
+padding:0 10px;
+}
+
+.emoji{
+font-size:36px;
+}
+
+.game-area{
+height:85%;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- SPLASH -->
+<div id="splash" class="screen">
+<img id="logo" src="assets/innovine-logo.png" alt="Innovine">
+</div>
+
+<!-- GAME -->
+<div id="game" class="screen hidden">
+
+<h1>Match the Uppercase letter to lowercase letters.</h1>
+
+<div class="game-area">
+
+<svg id="svgLines"></svg>
+
+<div class="column left">
+
+<div class="box" data-letter="H">
+<span class="emoji">🐴</span>
+<span>H</span>
+</div>
+
+<div class="box" data-letter="F">
+<span class="emoji">🐟</span>
+<span>F</span>
+</div>
+
+<div class="box" data-letter="G">
+<span class="emoji">🐐</span>
+<span>G</span>
+</div>
+
+<div class="box" data-letter="E">
+<span class="emoji">🐘</span>
+<span>E</span>
+</div>
+
+</div>
+
+<div class="column right">
+
+<div class="box target" data-letter="g">
+<span>g</span>
+<span class="emoji">🐐</span>
+</div>
+
+<div class="box target" data-letter="h">
+<span>h</span>
+<span class="emoji">🐴</span>
+</div>
+
+<div class="box target" data-letter="e">
+<span>e</span>
+<span class="emoji">🐘</span>
+</div>
+
+<div class="box target" data-letter="f">
+<span>f</span>
+<span class="emoji">🐟</span>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<!-- COMPLETE -->
+<div id="complete" class="screen hidden">
+<h2>🎉 Good Job! 🎉</h2>
+</div>
+
+<audio id="wrongSound" src="assets/wrong.mp3"></audio>
+
+<script>
+
+setTimeout(()=>{
+document.getElementById("splash").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
+},3000);
+
+let selected=null;
+let matches=0;
+
+const correct={
+"H":"h",
+"F":"f",
+"G":"g",
+"E":"e"
+};
+
+document.querySelectorAll(".left .box").forEach(box=>{
+
+box.addEventListener("click",()=>{
+
+document.querySelectorAll(".left .box").forEach(b=>b.classList.remove("selected"));
+
+selected=box;
+box.classList.add("selected");
+
+});
+
+});
+
+document.querySelectorAll(".target").forEach(target=>{
+
+target.addEventListener("click",()=>{
+
+if(!selected) return;
+
+let leftLetter=selected.dataset.letter;
+let rightLetter=target.dataset.letter;
+
+if(correct[leftLetter]===rightLetter){
+
+drawLine(selected,target);
+
+showFeedback("✅");
+
+selected.style.pointerEvents="none";
+target.style.pointerEvents="none";
+
+selected.style.opacity="0.7";
+target.style.opacity="0.7";
+
+matches++;
+
+if(matches===4){
+
+setTimeout(()=>{
+document.getElementById("game").classList.add("hidden");
+document.getElementById("complete").classList.remove("hidden");
+launchConfetti();
+},1000);
+
+}
+
+}else{
+
+document.getElementById("wrongSound").play();
+
+showFeedback("❌");
+
+}
+
+selected.classList.remove("selected");
+selected=null;
+
+});
+
+});
+
+function showFeedback(symbol){
+
+let div=document.createElement("div");
+div.className="feedback";
+div.innerHTML=symbol;
+
+div.style.left="50%";
+div.style.top="50%";
+div.style.transform="translate(-50%,-50%)";
+
+document.body.appendChild(div);
+
+setTimeout(()=>{
+div.remove();
+},700);
+
+}
+
+function drawLine(from,to){
+
+const svg=document.getElementById("svgLines");
+
+const gameArea=document.querySelector(".game-area");
+
+const r1=from.getBoundingClientRect();
+const r2=to.getBoundingClientRect();
+const rg=gameArea.getBoundingClientRect();
+
+let x1=r1.right-rg.left;
+let y1=r1.top+r1.height/2-rg.top;
+
+let x2=r2.left-rg.left;
+let y2=r2.top+r2.height/2-rg.top;
+
+let line=document.createElementNS(
+"http://www.w3.org/2000/svg",
+"line"
+);
+
+line.setAttribute("x1",x1);
+line.setAttribute("y1",y1);
+line.setAttribute("x2",x2);
+line.setAttribute("y2",y2);
+
+line.setAttribute("stroke","#00c853");
+line.setAttribute("stroke-width","8");
+line.setAttribute("stroke-linecap","round");
+
+svg.appendChild(line);
+
+}
+
+function launchConfetti(){
+
+for(let i=0;i<150;i++){
+
+let c=document.createElement("div");
+
+c.className="confetti";
+
+c.style.left=Math.random()*100+"vw";
+c.style.top="-20px";
+
+c.style.background=
+`hsl(${Math.random()*360},100%,50%)`;
+
+c.style.animationDuration=
+(2+Math.random()*3)+"s";
+
+document.getElementById("complete")
+.appendChild(c);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
