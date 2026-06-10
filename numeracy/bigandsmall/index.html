@@ -164,7 +164,19 @@ html,body{
 
     object-fit:contain;
 }
+/* BIG OBJECTS */
 
+.big-object img{
+    width:80%;
+    height:80%;
+}
+
+/* SMALL OBJECTS */
+
+.small-object img{
+    width:45%;
+    height:45%;
+}
 .card p{
     margin-top:5px;
 
@@ -513,9 +525,9 @@ canvas{
 
             <!-- ELEPHANT -->
 
-            <div class="card border1"
-                 draggable="true"
-                 data-answer="big">
+           <div class="card border1 big-object"
+     draggable="true"
+     data-answer="big">
 
                 <img src="assets/elephant.png" alt="Elephant">
 
@@ -525,9 +537,9 @@ canvas{
 
             <!-- TENNISBALL -->
 
-            <div class="card border3"
-                 draggable="true"
-                 data-answer="small">
+           <div class="card border3 small-object"
+     draggable="true"
+     data-answer="small">
 
                 <img src="assets/tennisball.png" alt="Tennisball">
 
@@ -538,9 +550,9 @@ canvas{
 
             <!-- TRUCK -->
 
-            <div class="card border3"
-                 draggable="true"
-                 data-answer="big">
+           <div class="card border3 big-object"
+     draggable="true"
+     data-answer="big">
 
                 <img src="assets/truck.png" alt="Truck">
 
@@ -550,9 +562,9 @@ canvas{
 
             <!-- ANT -->
 
-            <div class="card border4"
-                 draggable="true"
-                 data-answer="small">
+            <<div class="card border4 small-object"
+     draggable="true"
+     data-answer="small">
 
                 <img src="assets/ant.png" alt="Ant">
 
@@ -562,9 +574,9 @@ canvas{
 
             <!-- TREE -->
 
-            <div class="card border5"
-                 draggable="true"
-                 data-answer="big">
+           <div class="card border5 big-object"
+     draggable="true"
+     data-answer="big">
 
                 <img src="assets/tree.png" alt="Tree">
 
@@ -574,9 +586,9 @@ canvas{
 
             <!-- PLANT -->
 
-            <div class="card border6"
-                 draggable="true"
-                 data-answer="small">
+            <div class="card border6 small-object"
+     draggable="true"
+     data-answer="small">
 
                 <img
                 src="https://cdn-icons-png.flaticon.com/512/628/628324.png"
@@ -657,7 +669,25 @@ const wrongSound = document.getElementById("wrongSound");
 
 let draggedCard = null;
 let correctCount = 0;
+/* SHUFFLE CARDS */
 
+function shuffleCards(){
+
+    const pool = document.getElementById("pool");
+
+    const cards = Array.from(pool.children);
+
+    for(let i = cards.length - 1; i > 0; i--){
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+    }
+
+    cards.forEach(card => pool.appendChild(card));
+}
+
+shuffleCards();
 /* ================= DRAG SUPPORT ================= */
 
 cards.forEach(card => {
