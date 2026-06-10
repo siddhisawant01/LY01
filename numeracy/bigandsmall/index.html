@@ -31,8 +31,8 @@ position:relative;
 
 background-image:
 linear-gradient(
-rgba(255,255,255,0.70),
-rgba(255,255,255,0.70)
+rgba(255,255,255,0.7),
+rgba(255,255,255,0.7)
 ),
 url("assets/background.jpg");
 
@@ -45,8 +45,6 @@ background-repeat:no-repeat;
 display:flex;
 }
 
-/* Logo Screen */
-
 #screen0{
 background:white;
 }
@@ -56,8 +54,6 @@ width:min(320px,75vw);
 height:auto;
 }
 
-/* Instructions */
-
 .instruction{
 font-size:clamp(26px,4vw,50px);
 font-weight:bold;
@@ -65,8 +61,6 @@ color:#ff4d6d;
 margin-bottom:25px;
 text-align:center;
 }
-
-/* Game Area */
 
 .game-area{
 width:100%;
@@ -76,8 +70,6 @@ align-items:center;
 gap:20px;
 }
 
-/* Image Cards */
-
 .option{
 display:flex;
 justify-content:center;
@@ -86,8 +78,8 @@ background:white;
 padding:12px;
 border-radius:28px;
 cursor:pointer;
-transition:0.2s;
 border:8px solid;
+transition:0.2s;
 }
 
 .option:nth-child(1){
@@ -106,8 +98,6 @@ transform:scale(0.95);
 object-fit:contain;
 }
 
-/* Big and Small Sizes */
-
 .big{
 width:min(340px,42vw);
 height:min(340px,42vw);
@@ -117,8 +107,6 @@ height:min(340px,42vw);
 width:min(160px,22vw);
 height:min(160px,22vw);
 }
-
-/* Feedback */
 
 .feedback{
 position:absolute;
@@ -135,17 +123,13 @@ color:green;
 color:red;
 }
 
-/* Final Screen */
-
 .amazing{
-font-size:clamp(45px,8vw,90px);
+font-size:clamp(50px,8vw,90px);
 font-weight:bold;
 color:#ff4081;
 text-align:center;
 z-index:5;
 }
-
-/* Confetti */
 
 .confetti{
 position:absolute;
@@ -165,8 +149,6 @@ transform:translateY(110vh) rotate(720deg);
 }
 
 }
-
-/* Mobile */
 
 @media(max-width:768px){
 
@@ -192,24 +174,23 @@ font-size:32px;
 
 </style>
 </head>
+
 <body>
 
 <audio id="clap" src="assets/clap.mp3"></audio>
 <audio id="wrong" src="assets/wrong.mp3"></audio>
 
-<!-- Slide 1 -->
+<!-- Logo Screen -->
 
 <div class="screen active" id="screen0">
 <img src="assets/innovine-logo.png" class="logo">
 </div>
 
-<!-- Slide 2 -->
+<!-- Question 1 -->
 
 <div class="screen" id="screen1">
 
-<div class="instruction">
-Identify big
-</div>
+<div class="instruction">Identify big</div>
 
 <div class="game-area">
 
@@ -228,13 +209,11 @@ Identify big
 
 </div>
 
-<!-- Slide 3 -->
+<!-- Question 2 -->
 
 <div class="screen" id="screen2">
 
-<div class="instruction">
-Identify small
-</div>
+<div class="instruction">Identify small</div>
 
 <div class="game-area">
 
@@ -253,13 +232,11 @@ Identify small
 
 </div>
 
-<!-- Slide 4 -->
+<!-- Question 3 -->
 
 <div class="screen" id="screen3">
 
-<div class="instruction">
-Identify big
-</div>
+<div class="instruction">Identify big</div>
 
 <div class="game-area">
 
@@ -278,13 +255,11 @@ Identify big
 
 </div>
 
-<!-- Slide 5 -->
+<!-- Question 4 -->
 
 <div class="screen" id="screen4">
 
-<div class="instruction">
-Identify small
-</div>
+<div class="instruction">Identify small</div>
 
 <div class="game-area">
 
@@ -303,34 +278,9 @@ Identify small
 
 </div>
 
-<!-- Slide 6 -->
+<!-- Final Screen -->
 
 <div class="screen" id="screen5">
-
-<div class="instruction">
-Identify big
-</div>
-
-<div class="game-area">
-
-<div class="option" onclick="checkAnswer(true)">
-<img src="assets/elephant.png" class="big">
-</div>
-
-<div class="option" onclick="checkAnswer(false)">
-<img src="assets/ant.png" class="small">
-</div>
-
-</div>
-
-<div class="feedback tick">✓</div>
-<div class="feedback cross">✗</div>
-
-</div>
-
-<!-- Slide 7 -->
-
-<div class="screen" id="screen6">
 
 <div class="amazing">
 🎉 Amazing! 🎉
@@ -342,8 +292,6 @@ Identify big
 
 let currentScreen = 0;
 
-/* Logo Screen Duration */
-
 setTimeout(() => {
 
 document.getElementById("screen0").classList.remove("active");
@@ -352,9 +300,7 @@ currentScreen = 1;
 
 document.getElementById("screen1").classList.add("active");
 
-},2000);
-
-/* Answer Checking */
+}, 2000);
 
 function checkAnswer(correct){
 
@@ -374,7 +320,7 @@ document.getElementById("clap").play();
 
 tick.style.display = "block";
 
-setTimeout(()=>{
+setTimeout(() => {
 
 tick.style.display = "none";
 
@@ -390,7 +336,7 @@ document.getElementById("wrong").play();
 
 cross.style.display = "block";
 
-setTimeout(()=>{
+setTimeout(() => {
 
 cross.style.display = "none";
 
@@ -400,21 +346,19 @@ cross.style.display = "none";
 
 }
 
-/* Auto Next Question */
-
 function goToNextQuestion(){
 
-document
-.getElementById("screen"+currentScreen)
-.classList.remove("active");
+document.getElementById(
+"screen" + currentScreen
+).classList.remove("active");
 
 currentScreen++;
 
-document
-.getElementById("screen"+currentScreen)
-.classList.add("active");
+document.getElementById(
+"screen" + currentScreen
+).classList.add("active");
 
-if(currentScreen === 6){
+if(currentScreen === 5){
 
 createConfetti();
 
@@ -422,11 +366,9 @@ createConfetti();
 
 }
 
-/* Final Confetti */
-
 function createConfetti(){
 
-const colors=[
+const colors = [
 "#ff4081",
 "#ff9800",
 "#4caf50",
@@ -437,25 +379,26 @@ const colors=[
 
 for(let i=0;i<150;i++){
 
-let conf=
+let conf =
 document.createElement("div");
 
 conf.classList.add("confetti");
 
-conf.style.left=
-Math.random()*100+"vw";
+conf.style.left =
+Math.random()*100 + "vw";
 
-conf.style.background=
-colors[Math.floor(Math.random()*colors.length)];
+conf.style.background =
+colors[Math.floor(
+Math.random()*colors.length
+)];
 
-conf.style.animationDuration=
-(Math.random()*3+3)+"s";
+conf.style.animationDuration =
+(Math.random()*3+3) + "s";
 
-conf.style.animationDelay=
-(Math.random()*2)+"s";
+conf.style.animationDelay =
+(Math.random()*2) + "s";
 
-document
-.getElementById("screen6")
+document.getElementById("screen5")
 .appendChild(conf);
 
 }
