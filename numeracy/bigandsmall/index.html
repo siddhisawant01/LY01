@@ -1,872 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-
-<title>Big and Small Game</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<title>Big and Small</title>
 
 <style>
-
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
 }
 
-html,body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    font-family:'Nunito',sans-serif;
+body{
+overflow:hidden;
+background:#fff;
 }
 
-/* ================= SLIDES ================= */
-
-.slide{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
+.screen{
+width:100vw;
+height:100vh;
+display:none;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:15px;
+position:relative;
+background-image:
+linear-gradient(rgba(255,255,255,0.75),rgba(255,255,255,0.75)),
+url("https://i.pinimg.com/736x/0e/4f/1c/0e4f1c42b6459b8f73d1b267c8470c73.jpg");
+background-size:cover;
+background-position:center;
 }
 
-/* ================= SLIDE 1 ================= */
-
-#slide1{
-    background:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:50;
-
-    animation:fadeOut 1s ease forwards;
-    animation-delay:2s;
+.screen.active{
+display:flex;
 }
 
 .logo{
-    width:min(300px,70vw);
+width:min(300px,70vw);
+max-height:220px;
+object-fit:contain;
 }
 
-@keyframes fadeOut{
-    to{
-        opacity:0;
-        visibility:hidden;
-    }
+.instruction{
+font-size:clamp(24px,4vw,40px);
+font-weight:bold;
+color:#ff4d6d;
+margin-bottom:20px;
+text-align:center;
 }
 
-/* ================= SLIDE 2 ================= */
-
-#slide2{
-    display:flex;
-    flex-direction:column;
-
-    background:
-    linear-gradient(rgba(255,255,255,0.12),rgba(255,255,255,0.12)),
-    url("https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1200&auto=format&fit=crop");
-
-    background-size:cover;
-    background-position:center;
-
-    overflow:hidden;
-
-    padding:8px;
+.game-area{
+width:100%;
+display:flex;
+justify-content:space-evenly;
+align-items:center;
+gap:10px;
 }
 
-/* ================= TITLE ================= */
-
-.title{
-    height:8vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    font-size:clamp(22px,2.5vw,42px);
-    font-weight:900;
-
-    color:white;
-
-    text-shadow:3px 3px 8px rgba(0,0,0,0.35);
+.option{
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+transition:0.2s;
+padding:10px;
+border-radius:25px;
+border:8px solid;
+background:white;
 }
 
-/* ================= MAIN LAYOUT ================= */
-
-.game-layout{
-    flex:1;
-
-    display:grid;
-    grid-template-columns:1fr 1fr;
-
-    gap:10px;
-
-    height:92vh;
-
-    overflow:hidden;
+.option:nth-child(1){
+border-color:#ff6b6b;
 }
 
-/* ================= LEFT PANEL ================= */
-
-.left-panel{
-    background:rgba(255,255,255,0.88);
-
-    border-radius:22px;
-
-    padding:10px;
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    grid-template-rows:repeat(3,1fr);
-
-    gap:10px;
-
-    overflow:hidden;
+.option:nth-child(2){
+border-color:#4ecdc4;
 }
 
-/* ================= ITEM CARDS ================= */
-
-.card{
-    background:#ffffff;
-
-    border-radius:20px;
-    border:5px solid;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    cursor:grab;
-
-    transition:0.25s;
-
-    min-height:0;
-
-    box-shadow:0 4px 10px rgba(0,0,0,0.12);
+.option img{
+object-fit:contain;
 }
 
-.card:hover{
-    transform:scale(1.02);
+.big{
+width:min(300px,40vw);
+height:min(300px,40vw);
 }
 
-/* ================= IMAGE SIZE ================= */
-
-.card img{
-    width:56%;
-    height:56%;
-
-    object-fit:contain;
+.small{
+width:min(150px,20vw);
+height:min(150px,20vw);
 }
-/* BIG OBJECTS */
-
-.big-object img{
-    width:80%;
-    height:80%;
-}
-
-/* SMALL OBJECTS */
-
-.small-object img{
-    width:45%;
-    height:45%;
-}
-.card p{
-    margin-top:5px;
-
-    font-size:clamp(11px,1vw,18px);
-
-    font-weight:800;
-
-    color:#444;
-
-    text-align:center;
-}
-
-/* ================= BORDERS ================= */
-
-.border1{ border-color:#ff6b6b; }
-.border2{ border-color:#48dbfb; }
-.border3{ border-color:#1dd1a1; }
-.border4{ border-color:#f368e0; }
-.border5{ border-color:#feca57; }
-.border6{ border-color:#5f27cd; }
-
-/* ================= RIGHT PANEL ================= */
-
-.right-panel{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-
-    gap:10px;
-
-    overflow:hidden;
-}
-
-/* ================= DROP ZONES ================= */
-
-.zone{
-    background:rgba(255,255,255,0.88);
-
-    border-radius:22px;
-
-    border:4px dashed rgba(255,255,255,0.9);
-
-    display:flex;
-    flex-direction:column;
-
-    align-items:center;
-
-    padding:8px;
-
-    overflow:hidden;
-}
-
-.zone h2{
-    font-size:clamp(20px,2vw,34px);
-
-    color:#ff2e7a;
-
-    font-weight:900;
-
-    margin-bottom:6px;
-}
-
-.drop-items{
-    width:100%;
-
-    flex:1;
-
-    display:grid;
-
-    grid-template-columns:1fr;
-
-    gap:6px;
-
-    justify-items:center;
-
-    overflow:hidden;
-}
-
-/* ================= DROPPED CARDS ================= */
-
-.drop-items .card{
-    width:100%;
-    max-width:100px;
-
-    aspect-ratio:1/1;
-
-    border-width:4px;
-}
-
-.drop-items .card img{
-    width:58%;
-    height:58%;
-}
-
-.drop-items .card p{
-    font-size:11px;
-}
-
-/* ================= FEEDBACK ================= */
 
 .feedback{
-    position:fixed;
-
-    top:50%;
-    left:50%;
-
-    transform:translate(-50%,-50%);
-
-    font-size:90px;
-
-    opacity:0;
-
-    pointer-events:none;
-
-    z-index:999;
+position:absolute;
+font-size:min(140px,22vw);
+display:none;
+z-index:10;
 }
 
-.show{
-    animation:pop 0.7s ease;
+.tick{
+color:green;
 }
 
-@keyframes pop{
-
-    0%{
-        transform:translate(-50%,-50%) scale(0.2);
-        opacity:0;
-    }
-
-    40%{
-        transform:translate(-50%,-50%) scale(1.3);
-        opacity:1;
-    }
-
-    100%{
-        transform:translate(-50%,-50%) scale(1);
-        opacity:0;
-    }
+.cross{
+color:red;
 }
 
-/* ================= SLIDE 3 ================= */
-
-#slide3{
-    display:none;
-
-    justify-content:center;
-    align-items:center;
-
-    flex-direction:column;
-
-    background:linear-gradient(135deg,#ff9ff3,#48dbfb,#feca57);
-
-    overflow:hidden;
+.amazing{
+font-size:clamp(40px,8vw,90px);
+font-weight:bold;
+color:#ff4081;
+text-align:center;
+z-index:2;
 }
 
-.success{
-    font-size:clamp(60px,10vw,120px);
-
-    color:white;
-
-    font-weight:900;
-
-    z-index:5;
-
-    text-shadow:4px 4px 12px rgba(0,0,0,0.25);
-
-    animation:bounce 1s infinite;
+.confetti{
+position:absolute;
+width:12px;
+height:12px;
+animation:fall linear infinite;
 }
 
-@keyframes bounce{
-
-    0%,100%{
-        transform:translateY(0);
-    }
-
-    50%{
-        transform:translateY(-12px);
-    }
+@keyframes fall{
+from{
+transform:translateY(-100px) rotate(0deg);
+}
+to{
+transform:translateY(110vh) rotate(720deg);
+}
 }
 
-canvas{
-    position:absolute;
-    inset:0;
+.nextBtn{
+position:absolute;
+bottom:20px;
+right:20px;
+padding:12px 22px;
+font-size:20px;
+border:none;
+border-radius:12px;
+background:#4caf50;
+color:white;
+display:none;
 }
-
-/* ================= TABLET ================= */
-
-@media(max-width:1024px){
-
-    .game-layout{
-        gap:8px;
-    }
-
-    .left-panel,
-    .right-panel{
-        gap:8px;
-    }
-
-    .card{
-        border-width:4px;
-    }
-
-    /* BIGGER IMAGES */
-
-    .card img{
-        width:62%;
-        height:62%;
-    }
-}
-
-/* ================= MOBILE ================= */
 
 @media(max-width:768px){
 
-    #slide2{
-        padding:5px;
-    }
-
-    .title{
-        height:7vh;
-
-        font-size:30px;
-    }
-
-    .game-layout{
-        height:93vh;
-
-        gap:5px;
-    }
-
-    .left-panel{
-        padding:5px;
-
-        gap:5px;
-
-        border-radius:16px;
-    }
-
-    .right-panel{
-        gap:5px;
-    }
-
-    .zone{
-        border-radius:16px;
-
-        padding:4px;
-    }
-
-    .zone h2{
-        font-size:18px;
-
-        margin-bottom:3px;
-    }
-
-    .card{
-        border-radius:16px;
-
-        border-width:3px;
-    }
-
-    /* ================= MOBILE IMAGE SIZE FIX ================= */
-
-    .card img{
-        width:72%;
-        height:72%;
-    }
-
-    .card p{
-        font-size:11px;
-
-        margin-top:2px;
-    }
-
-    .drop-items{
-        gap:4px;
-    }
-
-    .drop-items .card{
-        max-width:78px;
-    }
-
-    /* BIGGER DROPPED IMAGES */
-
-    .drop-items .card img{
-        width:68%;
-        height:68%;
-    }
-
-    .drop-items .card p{
-        font-size:9px;
-    }
-
-    .feedback{
-        font-size:65px;
-    }
-
-    .success{
-        font-size:55px;
-        text-align:center;
-    }
+.game-area{
+flex-direction:row;
 }
 
+.big{
+width:42vw;
+height:42vw;
+}
+
+.small{
+width:24vw;
+height:24vw;
+}
+
+.instruction{
+font-size:30px;
+}
+}
 </style>
 </head>
-
 <body>
 
-<!-- ================= AUDIO ================= -->
+<audio id="clap" src="assets/clap.mp3"></audio>
+<audio id="wrong" src="assets/wrong.mp3"></audio>
 
-<audio id="correctSound">
-<source src="correct.mp3" type="audio/mpeg">
-<!-- Replace with your correct sound -->
-</audio>
-
-<audio id="wrongSound">
-<source src="assets/wrong.mp3" type="audio/mpeg">
-</audio>
-
-<!-- ================= FEEDBACK ================= -->
-
-<div id="tick" class="feedback">✅</div>
-<div id="cross" class="feedback">❌</div>
-
-<!-- ================= SLIDE 1 ================= -->
-
-<div id="slide1" class="slide">
-
-    <img
-    src="assets/innovine-logo.png"
-    class="logo"
-    alt="Innovine Logo">
-
+<!-- Slide 1 -->
+<div class="screen active" id="screen0" style="background:white;">
+<img src="assets/innovine-logo.png" class="logo">
 </div>
 
-<!-- ================= SLIDE 2 ================= -->
+<!-- Slide 2 -->
+<div class="screen" id="screen1">
+<div class="instruction">Identify Big</div>
 
-<div id="slide2" class="slide">
-
-    <div class="title">
-        Identify big and small
-    </div>
-
-    <div class="game-layout">
-
-        <!-- ================= LEFT PANEL ================= -->
-
-        <div class="left-panel" id="pool">
-
-            <!-- ELEPHANT -->
-
-           <div class="card border1 big-object"
-     draggable="true"
-     data-answer="big">
-
-                <img src="assets/elephant.png" alt="Elephant">
-
-                <p>elephant</p>
-
-            </div>
-
-            <!-- TENNISBALL -->
-
-           <div class="card border3 small-object"
-     draggable="true"
-     data-answer="small">
-
-                <img src="assets/tennisball.png" alt="Tennisball">
-
-                <p>tennisball</p>
-
-            </div>
-
-
-            <!-- TRUCK -->
-
-           <div class="card border3 big-object"
-     draggable="true"
-     data-answer="big">
-
-                <img src="assets/truck.png" alt="Truck">
-
-                <p>truck</p>
-
-            </div>
-
-            <!-- ANT -->
-
-            <<div class="card border4 small-object"
-     draggable="true"
-     data-answer="small">
-
-                <img src="assets/ant.png" alt="Ant">
-
-                <p>ant</p>
-
-            </div>
-
-            <!-- TREE -->
-
-           <div class="card border5 big-object"
-     draggable="true"
-     data-answer="big">
-
-                <img src="assets/tree.png" alt="Tree">
-
-                <p>tree</p>
-
-            </div>
-
-            <!-- PLANT -->
-
-            <div class="card border6 small-object"
-     draggable="true"
-     data-answer="small">
-
-                <img
-                src="https://cdn-icons-png.flaticon.com/512/628/628324.png"
-                alt="Plant">
-
-                <!-- Replace with:
-                assets/plant.png
-                -->
-
-                <p>plant</p>
-
-            </div>
-
-        </div>
-
-        <!-- ================= RIGHT PANEL ================= -->
-
-        <div class="right-panel">
-
-            <!-- BIG -->
-
-            <div class="zone" data-zone="big">
-
-                <h2>big</h2>
-
-                <div class="drop-items"></div>
-
-            </div>
-
-            <!-- SMALL -->
-
-            <div class="zone" data-zone="small">
-
-                <h2>small</h2>
-
-                <div class="drop-items"></div>
-
-            </div>
-
-        </div>
-
-    </div>
-
+<div class="game-area">
+<div class="option" onclick="checkAnswer(true,1)">
+<img src="assets/elephant.png" class="big">
 </div>
 
-<!-- ================= SLIDE 3 ================= -->
+<div class="option" onclick="checkAnswer(false,1)">
+<img src="assets/ant.png" class="small">
+</div>
+</div>
 
-<div id="slide3" class="slide">
+<div class="feedback tick">✓</div>
+<div class="feedback cross">✗</div>
+<button class="nextBtn" onclick="nextScreen()">Next</button>
+</div>
 
-    <canvas id="confetti"></canvas>
+<!-- Slide 3 -->
+<div class="screen" id="screen2">
+<div class="instruction">Identify Small</div>
 
-    <div class="success">
-        Fantastic!
-    </div>
+<div class="game-area">
+<div class="option" onclick="checkAnswer(false,2)">
+<img src="assets/tree.png" class="big">
+</div>
 
+<div class="option" onclick="checkAnswer(true,2)">
+<img src="assets/plant.png" class="small">
+</div>
+</div>
+
+<div class="feedback tick">✓</div>
+<div class="feedback cross">✗</div>
+<button class="nextBtn" onclick="nextScreen()">Next</button>
+</div>
+
+<!-- Slide 4 -->
+<div class="screen" id="screen3">
+<div class="instruction">Identify Big</div>
+
+<div class="game-area">
+<div class="option" onclick="checkAnswer(true,3)">
+<img src="assets/basketball.png" class="big">
+</div>
+
+<div class="option" onclick="checkAnswer(false,3)">
+<img src="assets/tennisball.png" class="small">
+</div>
+</div>
+
+<div class="feedback tick">✓</div>
+<div class="feedback cross">✗</div>
+<button class="nextBtn" onclick="nextScreen()">Next</button>
+</div>
+
+<!-- Slide 5 -->
+<div class="screen" id="screen4">
+<div class="instruction">Identify Small</div>
+
+<div class="game-area">
+<div class="option" onclick="checkAnswer(false,4)">
+<img src="assets/truck.png" class="big">
+</div>
+
+<div class="option" onclick="checkAnswer(true,4)">
+<img src="assets/scooty.png" class="small">
+</div>
+</div>
+
+<div class="feedback tick">✓</div>
+<div class="feedback cross">✗</div>
+<button class="nextBtn" onclick="nextScreen()">Next</button>
+</div>
+
+<!-- Slide 6 -->
+<div class="screen" id="screen5">
+<div class="instruction">Identify Big</div>
+
+<div class="game-area">
+<div class="option" onclick="checkAnswer(true,5)">
+<img src="assets/elephant.png" class="big">
+</div>
+
+<div class="option" onclick="checkAnswer(false,5)">
+<img src="assets/ant.png" class="small">
+</div>
+</div>
+
+<div class="feedback tick">✓</div>
+<div class="feedback cross">✗</div>
+<button class="nextBtn" onclick="nextScreen()">Next</button>
+</div>
+
+<!-- Slide 7 -->
+<div class="screen" id="screen6">
+<div class="amazing">🎉 AMAZING! 🎉</div>
 </div>
 
 <script>
 
-/* ================= INTRO ================= */
+let currentScreen = 0;
 
-setTimeout(() => {
+setTimeout(()=>{
+nextScreen();
+},2000);
 
-    document.getElementById("slide1").style.display = "none";
+function nextScreen(){
 
-},3000);
+document.getElementById("screen"+currentScreen).classList.remove("active");
 
-/* ================= ELEMENTS ================= */
+currentScreen++;
 
-const cards = document.querySelectorAll(".card");
-const zones = document.querySelectorAll(".zone");
-
-const tick = document.getElementById("tick");
-const cross = document.getElementById("cross");
-
-const correctSound = document.getElementById("correctSound");
-const wrongSound = document.getElementById("wrongSound");
-
-let draggedCard = null;
-let correctCount = 0;
-/* SHUFFLE CARDS */
-
-function shuffleCards(){
-
-    const pool = document.getElementById("pool");
-
-    const cards = Array.from(pool.children);
-
-    for(let i = cards.length - 1; i > 0; i--){
-
-        const j = Math.floor(Math.random() * (i + 1));
-
-        [cards[i], cards[j]] = [cards[j], cards[i]];
-    }
-
-    cards.forEach(card => pool.appendChild(card));
+if(currentScreen<=6){
+document.getElementById("screen"+currentScreen).classList.add("active");
 }
 
-shuffleCards();
-/* ================= DRAG SUPPORT ================= */
-
-cards.forEach(card => {
-
-    card.addEventListener("dragstart", () => {
-
-        draggedCard = card;
-
-    });
-
-    card.addEventListener("touchstart", () => {
-
-        draggedCard = card;
-
-    });
-
-});
-
-/* ================= DROP SUPPORT ================= */
-
-zones.forEach(zone => {
-
-    zone.addEventListener("dragover", (e) => {
-
-        e.preventDefault();
-
-    });
-
-    zone.addEventListener("drop", () => {
-
-        handleDrop(zone);
-
-    });
-
-    zone.addEventListener("touchend", () => {
-
-        if(draggedCard){
-
-            handleDrop(zone);
-
-        }
-
-    });
-
-});
-
-/* ================= GAME LOGIC ================= */
-
-function handleDrop(zone){
-
-    const correctAnswer = draggedCard.dataset.answer;
-    const chosenZone = zone.dataset.zone;
-
-    if(correctAnswer === chosenZone){
-
-        zone.querySelector(".drop-items")
-        .appendChild(draggedCard);
-
-        draggedCard.draggable = false;
-
-        draggedCard.style.cursor = "default";
-
-        correctSound.currentTime = 0;
-        correctSound.play();
-
-        showTick();
-
-        correctCount++;
-
-        if(correctCount === 6){
-
-            setTimeout(() => {
-
-                document.getElementById("slide2").style.display = "none";
-
-                document.getElementById("slide3").style.display = "flex";
-
-                startConfetti();
-
-            },1000);
-        }
-
-    }else{
-
-        wrongSound.currentTime = 0;
-        wrongSound.play();
-
-        showCross();
-    }
-
-    draggedCard = null;
+if(currentScreen===6){
+createConfetti();
+}
 }
 
-/* ================= FEEDBACK ================= */
+function checkAnswer(correct,screenNo){
 
-function showTick(){
+let screen=document.getElementById("screen"+screenNo);
 
-    tick.classList.add("show");
+let tick=screen.querySelector(".tick");
+let cross=screen.querySelector(".cross");
+let nextBtn=screen.querySelector(".nextBtn");
 
-    setTimeout(() => {
+if(correct){
 
-        tick.classList.remove("show");
+document.getElementById("clap").currentTime=0;
+document.getElementById("clap").play();
 
-    },700);
+tick.style.display="block";
+
+setTimeout(()=>{
+tick.style.display="none";
+nextBtn.style.display="block";
+},1200);
+
+}
+else{
+
+document.getElementById("wrong").currentTime=0;
+document.getElementById("wrong").play();
+
+cross.style.display="block";
+
+setTimeout(()=>{
+cross.style.display="none";
+},1000);
+
+}
 }
 
-function showCross(){
+function createConfetti(){
 
-    cross.classList.add("show");
+const colors=[
+"#ff4081",
+"#ff9800",
+"#4caf50",
+"#2196f3",
+"#9c27b0",
+"#ffeb3b"
+];
 
-    setTimeout(() => {
+for(let i=0;i<120;i++){
 
-        cross.classList.remove("show");
+let conf=document.createElement("div");
 
-    },700);
+conf.classList.add("confetti");
+
+conf.style.left=Math.random()*100+"vw";
+conf.style.background=colors[Math.floor(Math.random()*colors.length)];
+
+conf.style.animationDuration=
+(Math.random()*3+3)+"s";
+
+conf.style.animationDelay=
+(Math.random()*2)+"s";
+
+document.getElementById("screen6").appendChild(conf);
 }
-
-/* ================= CONFETTI ================= */
-
-function startConfetti(){
-
-    const canvas = document.getElementById("confetti");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const pieces = [];
-
-    for(let i=0;i<250;i++){
-
-        pieces.push({
-
-            x:Math.random()*canvas.width,
-            y:Math.random()*canvas.height-canvas.height,
-            r:Math.random()*7+3,
-            d:Math.random()*200
-
-        });
-
-    }
-
-    function draw(){
-
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-
-        pieces.forEach(p => {
-
-            ctx.beginPath();
-
-            ctx.fillStyle =
-            `hsl(${Math.random()*360},100%,50%)`;
-
-            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-
-            ctx.fill();
-
-        });
-
-        update();
-    }
-
-    function update(){
-
-        pieces.forEach(p => {
-
-            p.y += Math.cos(p.d)+3+p.r/2;
-
-            if(p.y > canvas.height){
-
-                p.y = -20;
-            }
-
-        });
-    }
-
-    setInterval(draw,20);
 }
-
 </script>
 
 </body>
