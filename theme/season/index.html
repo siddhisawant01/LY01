@@ -358,7 +358,7 @@ Identify the given object and put them in the correct season.
 <div id="cross" class="feedback cross">✗</div>
 
 <audio id="wrongSound" src="assets/wrong.mp3"></audio>
-
+<audio id="clapSound" src="assets/clap.mp3"></audio>
 <script>
 
 setTimeout(()=>{
@@ -495,6 +495,17 @@ function showComplete(){
 document.getElementById("game").classList.remove("active");
 document.getElementById("complete").classList.add("active");
 
+/* Clap Sound */
+
+const clap=document.getElementById("clapSound");
+
+if(clap){
+clap.currentTime=0;
+clap.play().catch(()=>{});
+}
+
+/* Snow Animation */
+
 for(let i=0;i<100;i++){
 
 const snow=document.createElement("div");
@@ -511,7 +522,6 @@ document.getElementById("complete").appendChild(snow);
 }
 
 }
-
 </script>
 
 </body>
