@@ -7,6 +7,7 @@
 <title>Big and Small</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -16,7 +17,6 @@ font-family:Arial, sans-serif;
 
 body{
 overflow:hidden;
-background:#fff;
 }
 
 .screen{
@@ -28,49 +28,66 @@ justify-content:center;
 align-items:center;
 padding:15px;
 position:relative;
+
 background-image:
-linear-gradient(rgba(255,255,255,0.75),rgba(255,255,255,0.75)),
-url("https://i.pinimg.com/736x/0e/4f/1c/0e4f1c42b6459b8f73d1b267c8470c73.jpg");
+linear-gradient(
+rgba(255,255,255,0.70),
+rgba(255,255,255,0.70)
+),
+url("assets/background.jpg");
+
 background-size:cover;
 background-position:center;
+background-repeat:no-repeat;
 }
 
 .screen.active{
 display:flex;
 }
 
-.logo{
-width:min(300px,70vw);
-max-height:220px;
-object-fit:contain;
+/* Logo Screen */
+
+#screen0{
+background:white;
 }
 
+.logo{
+width:min(320px,75vw);
+height:auto;
+}
+
+/* Instructions */
+
 .instruction{
-font-size:clamp(24px,4vw,40px);
+font-size:clamp(26px,4vw,50px);
 font-weight:bold;
 color:#ff4d6d;
-margin-bottom:20px;
+margin-bottom:25px;
 text-align:center;
 }
+
+/* Game Area */
 
 .game-area{
 width:100%;
 display:flex;
 justify-content:space-evenly;
 align-items:center;
-gap:10px;
+gap:20px;
 }
+
+/* Image Cards */
 
 .option{
 display:flex;
 justify-content:center;
 align-items:center;
+background:white;
+padding:12px;
+border-radius:28px;
 cursor:pointer;
 transition:0.2s;
-padding:10px;
-border-radius:25px;
 border:8px solid;
-background:white;
 }
 
 .option:nth-child(1){
@@ -81,25 +98,33 @@ border-color:#ff6b6b;
 border-color:#4ecdc4;
 }
 
+.option:active{
+transform:scale(0.95);
+}
+
 .option img{
 object-fit:contain;
 }
 
+/* Big and Small Sizes */
+
 .big{
-width:min(300px,40vw);
-height:min(300px,40vw);
+width:min(340px,42vw);
+height:min(340px,42vw);
 }
 
 .small{
-width:min(150px,20vw);
-height:min(150px,20vw);
+width:min(160px,22vw);
+height:min(160px,22vw);
 }
+
+/* Feedback */
 
 .feedback{
 position:absolute;
-font-size:min(140px,22vw);
+font-size:min(150px,25vw);
 display:none;
-z-index:10;
+z-index:100;
 }
 
 .tick{
@@ -110,13 +135,17 @@ color:green;
 color:red;
 }
 
+/* Final Screen */
+
 .amazing{
-font-size:clamp(40px,8vw,90px);
+font-size:clamp(45px,8vw,90px);
 font-weight:bold;
 color:#ff4081;
 text-align:center;
-z-index:2;
+z-index:5;
 }
+
+/* Confetti */
 
 .confetti{
 position:absolute;
@@ -126,36 +155,28 @@ animation:fall linear infinite;
 }
 
 @keyframes fall{
+
 from{
 transform:translateY(-100px) rotate(0deg);
 }
+
 to{
 transform:translateY(110vh) rotate(720deg);
 }
+
 }
 
-.nextBtn{
-position:absolute;
-bottom:20px;
-right:20px;
-padding:12px 22px;
-font-size:20px;
-border:none;
-border-radius:12px;
-background:#4caf50;
-color:white;
-display:none;
-}
+/* Mobile */
 
 @media(max-width:768px){
 
 .game-area{
-flex-direction:row;
+gap:10px;
 }
 
 .big{
-width:42vw;
-height:42vw;
+width:44vw;
+height:44vw;
 }
 
 .small{
@@ -164,9 +185,11 @@ height:24vw;
 }
 
 .instruction{
-font-size:30px;
+font-size:32px;
 }
+
 }
+
 </style>
 </head>
 <body>
@@ -175,167 +198,231 @@ font-size:30px;
 <audio id="wrong" src="assets/wrong.mp3"></audio>
 
 <!-- Slide 1 -->
-<div class="screen active" id="screen0" style="background:white;">
+
+<div class="screen active" id="screen0">
 <img src="assets/innovine-logo.png" class="logo">
 </div>
 
 <!-- Slide 2 -->
+
 <div class="screen" id="screen1">
-<div class="instruction">Identify Big</div>
+
+<div class="instruction">
+Identify big
+</div>
 
 <div class="game-area">
-<div class="option" onclick="checkAnswer(true,1)">
+
+<div class="option" onclick="checkAnswer(true)">
 <img src="assets/elephant.png" class="big">
 </div>
 
-<div class="option" onclick="checkAnswer(false,1)">
+<div class="option" onclick="checkAnswer(false)">
 <img src="assets/ant.png" class="small">
 </div>
+
 </div>
 
 <div class="feedback tick">✓</div>
 <div class="feedback cross">✗</div>
-<button class="nextBtn" onclick="nextScreen()">Next</button>
+
 </div>
 
 <!-- Slide 3 -->
+
 <div class="screen" id="screen2">
-<div class="instruction">Identify Small</div>
+
+<div class="instruction">
+Identify small
+</div>
 
 <div class="game-area">
-<div class="option" onclick="checkAnswer(false,2)">
+
+<div class="option" onclick="checkAnswer(false)">
 <img src="assets/tree.png" class="big">
 </div>
 
-<div class="option" onclick="checkAnswer(true,2)">
+<div class="option" onclick="checkAnswer(true)">
 <img src="assets/plant.png" class="small">
 </div>
+
 </div>
 
 <div class="feedback tick">✓</div>
 <div class="feedback cross">✗</div>
-<button class="nextBtn" onclick="nextScreen()">Next</button>
+
 </div>
 
 <!-- Slide 4 -->
+
 <div class="screen" id="screen3">
-<div class="instruction">Identify Big</div>
+
+<div class="instruction">
+Identify big
+</div>
 
 <div class="game-area">
-<div class="option" onclick="checkAnswer(true,3)">
+
+<div class="option" onclick="checkAnswer(true)">
 <img src="assets/basketball.png" class="big">
 </div>
 
-<div class="option" onclick="checkAnswer(false,3)">
+<div class="option" onclick="checkAnswer(false)">
 <img src="assets/tennisball.png" class="small">
 </div>
+
 </div>
 
 <div class="feedback tick">✓</div>
 <div class="feedback cross">✗</div>
-<button class="nextBtn" onclick="nextScreen()">Next</button>
+
 </div>
 
 <!-- Slide 5 -->
+
 <div class="screen" id="screen4">
-<div class="instruction">Identify Small</div>
+
+<div class="instruction">
+Identify small
+</div>
 
 <div class="game-area">
-<div class="option" onclick="checkAnswer(false,4)">
+
+<div class="option" onclick="checkAnswer(false)">
 <img src="assets/truck.png" class="big">
 </div>
 
-<div class="option" onclick="checkAnswer(true,4)">
+<div class="option" onclick="checkAnswer(true)">
 <img src="assets/scooty.png" class="small">
 </div>
+
 </div>
 
 <div class="feedback tick">✓</div>
 <div class="feedback cross">✗</div>
-<button class="nextBtn" onclick="nextScreen()">Next</button>
+
 </div>
 
 <!-- Slide 6 -->
+
 <div class="screen" id="screen5">
-<div class="instruction">Identify Big</div>
+
+<div class="instruction">
+Identify big
+</div>
 
 <div class="game-area">
-<div class="option" onclick="checkAnswer(true,5)">
+
+<div class="option" onclick="checkAnswer(true)">
 <img src="assets/elephant.png" class="big">
 </div>
 
-<div class="option" onclick="checkAnswer(false,5)">
+<div class="option" onclick="checkAnswer(false)">
 <img src="assets/ant.png" class="small">
 </div>
+
 </div>
 
 <div class="feedback tick">✓</div>
 <div class="feedback cross">✗</div>
-<button class="nextBtn" onclick="nextScreen()">Next</button>
+
 </div>
 
 <!-- Slide 7 -->
+
 <div class="screen" id="screen6">
-<div class="amazing">🎉 AMAZING! 🎉</div>
+
+<div class="amazing">
+🎉 Amazing! 🎉
+</div>
+
 </div>
 
 <script>
 
 let currentScreen = 0;
 
-setTimeout(()=>{
-nextScreen();
+/* Logo Screen Duration */
+
+setTimeout(() => {
+
+document.getElementById("screen0").classList.remove("active");
+
+currentScreen = 1;
+
+document.getElementById("screen1").classList.add("active");
+
 },2000);
 
-function nextScreen(){
+/* Answer Checking */
 
-document.getElementById("screen"+currentScreen).classList.remove("active");
+function checkAnswer(correct){
 
-currentScreen++;
+let screen =
+document.getElementById("screen" + currentScreen);
 
-if(currentScreen<=6){
-document.getElementById("screen"+currentScreen).classList.add("active");
-}
+let tick =
+screen.querySelector(".tick");
 
-if(currentScreen===6){
-createConfetti();
-}
-}
-
-function checkAnswer(correct,screenNo){
-
-let screen=document.getElementById("screen"+screenNo);
-
-let tick=screen.querySelector(".tick");
-let cross=screen.querySelector(".cross");
-let nextBtn=screen.querySelector(".nextBtn");
+let cross =
+screen.querySelector(".cross");
 
 if(correct){
 
-document.getElementById("clap").currentTime=0;
+document.getElementById("clap").currentTime = 0;
 document.getElementById("clap").play();
 
-tick.style.display="block";
+tick.style.display = "block";
 
 setTimeout(()=>{
-tick.style.display="none";
-nextBtn.style.display="block";
+
+tick.style.display = "none";
+
+goToNextQuestion();
+
 },1200);
 
 }
 else{
 
-document.getElementById("wrong").currentTime=0;
+document.getElementById("wrong").currentTime = 0;
 document.getElementById("wrong").play();
 
-cross.style.display="block";
+cross.style.display = "block";
 
 setTimeout(()=>{
-cross.style.display="none";
+
+cross.style.display = "none";
+
 },1000);
 
 }
+
 }
+
+/* Auto Next Question */
+
+function goToNextQuestion(){
+
+document
+.getElementById("screen"+currentScreen)
+.classList.remove("active");
+
+currentScreen++;
+
+document
+.getElementById("screen"+currentScreen)
+.classList.add("active");
+
+if(currentScreen === 6){
+
+createConfetti();
+
+}
+
+}
+
+/* Final Confetti */
 
 function createConfetti(){
 
@@ -348,14 +435,18 @@ const colors=[
 "#ffeb3b"
 ];
 
-for(let i=0;i<120;i++){
+for(let i=0;i<150;i++){
 
-let conf=document.createElement("div");
+let conf=
+document.createElement("div");
 
 conf.classList.add("confetti");
 
-conf.style.left=Math.random()*100+"vw";
-conf.style.background=colors[Math.floor(Math.random()*colors.length)];
+conf.style.left=
+Math.random()*100+"vw";
+
+conf.style.background=
+colors[Math.floor(Math.random()*colors.length)];
 
 conf.style.animationDuration=
 (Math.random()*3+3)+"s";
@@ -363,9 +454,14 @@ conf.style.animationDuration=
 conf.style.animationDelay=
 (Math.random()*2)+"s";
 
-document.getElementById("screen6").appendChild(conf);
+document
+.getElementById("screen6")
+.appendChild(conf);
+
 }
+
 }
+
 </script>
 
 </body>
