@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Our Homes - Identify the Correct Objects</title>
+
+<style>
+
+/* =========================================================
+   BASIC RESET
+========================================================= */
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#ffffff;
+}
+
+body{
+  touch-action:manipulation;
+}
+
+/* =========================================================
+   COMMON SCREEN
+========================================================= */
+
+.screen{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100vh;
+  height:100dvh;
+  display:none;
+  overflow:hidden;
+}
+
+.screen.active{
+  display:flex;
+}
+
+/* =========================================================
+   SLIDE 1 - LOGO
+========================================================= */
+
+#logoScreen{
+  background:#ffffff;
+  align-items:center;
+  justify-content:center;
+}
+
+#logoScreen img{
+  width:min(58vw, 380px);
+  max-height:65vh;
+  object-fit:contain;
+}
+
+/* =========================================================
+   GAME SCREEN
+========================================================= */
+
+#gameScreen{
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.18)
+    ),
+    url("assets/home.png");
+
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:cover;
+
+  padding:
+    max(7px, env(safe-area-inset-top))
+    8px
+    max(7px, env(safe-area-inset-bottom));
+}
+
+/* =========================================================
+   INSTRUCTION
+========================================================= */
+
+.instruction{
+  width:min(96%, 900px);
+
+  background:rgba(255,255,255,0.96);
+
+  border:4px solid #ff9f1c;
+  border-radius:18px;
+
+  padding:8px 12px;
+
+  color:#563000;
+
+  font-size:clamp(15px, 2.5vw, 25px);
+  font-weight:800;
+  text-align:center;
+
+  line-height:1.15;
+
+  box-shadow:0 4px 0 rgba(122,74,0,0.18);
+
+  flex-shrink:0;
+}
+
+/* =========================================================
+   ROOM IMAGE
+========================================================= */
+
+.room-section{
+  width:100%;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  margin-top:7px;
+
+  flex-shrink:0;
+}
+
+.room-image-box{
+  width:min(47vw, 335px);
+  height:clamp(115px, 27vh, 235px);
+
+  background:#ffffff;
+
+  border:6px solid #25b7d3;
+  border-radius:20px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:hidden;
+
+  box-shadow:
+    0 5px 0 rgba(0,0,0,0.14),
+    0 0 0 4px rgba(255,255,255,0.82);
+}
+
+.room-image-box img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.room-name{
+  margin-top:3px;
+
+  min-width:145px;
+
+  background:#fff4a8;
+
+  border:3px solid #f4b400;
+  border-radius:12px;
+
+  padding:3px 15px;
+
+  color:#482700;
+
+  font-size:clamp(18px, 3vw, 29px);
+  font-weight:900;
+  text-align:center;
+
+  text-transform:lowercase;
+
+  box-shadow:0 3px 0 rgba(120,79,0,0.18);
+}
+
+/* =========================================================
+   OPTION AREA
+========================================================= */
+
+.options{
+  width:min(98%, 980px);
+
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+
+  gap:clamp(6px, 1.4vw, 14px);
+
+  margin-top:7px;
+
+  flex:1;
+  min-height:0;
+}
+
+.option{
+  position:relative;
+
+  min-width:0;
+  min-height:0;
+
+  background:rgba(255,255,255,0.97);
+
+  border:5px solid var(--border-colour);
+  border-radius:18px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:5px;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 5px 0 rgba(0,0,0,0.16),
+    inset 0 0 0 3px rgba(255,255,255,0.85);
+
+  transition:
+    transform 0.12s ease,
+    opacity 0.12s ease;
+}
+
+.option:nth-child(1){
+  --border-colour:#ff6b6b;
+}
+
+.option:nth-child(2){
+  --border-colour:#8a5cf6;
+}
+
+.option:nth-child(3){
+  --border-colour:#18b875;
+}
+
+.option:nth-child(4){
+  --border-colour:#ff9f1c;
+}
+
+.option:active{
+  transform:scale(0.96);
+}
+
+.option-image{
+  width:100%;
+  flex:1;
+  min-height:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:hidden;
+}
+
+.option img{
+  width:100%;
+  height:100%;
+  max-height:135px;
+  object-fit:contain;
+
+  pointer-events:none;
+}
+
+.option-label{
+  width:100%;
+
+  background:#fff7ca;
+
+  border-radius:9px;
+
+  padding:4px 2px;
+
+  color:#332000;
+
+  font-size:clamp(13px, 2.1vw, 23px);
+  font-weight:900;
+
+  line-height:1.05;
+  text-align:center;
+
+  text-transform:lowercase;
+
+  white-space:normal;
+}
+
+.option.correct-selected{
+  border-color:#14ad58;
+
+  background:#e8fff0;
+
+  box-shadow:
+    0 5px 0 rgba(0,105,49,0.22),
+    inset 0 0 0 4px #7ae49e;
+}
+
+.option.correct-selected::after{
+  content:"✓";
+
+  position:absolute;
+
+  top:4px;
+  right:4px;
+
+  width:34px;
+  height:34px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#13af58;
+  color:#ffffff;
+
+  border:3px solid #ffffff;
+
+  font-size:25px;
+  font-weight:900;
+
+  box-shadow:0 3px 6px rgba(0,0,0,0.24);
+}
+
+/* =========================================================
+   FEEDBACK SYMBOL
+========================================================= */
+
+.feedback{
+  position:fixed;
+
+  left:50%;
+  top:50%;
+
+  transform:translate(-50%,-50%) scale(0);
+
+  width:105px;
+  height:105px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  z-index:100;
+
+  color:#ffffff;
+
+  font-size:78px;
+  font-weight:900;
+
+  border:7px solid #ffffff;
+
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+
+  pointer-events:none;
+
+  opacity:0;
+}
+
+.feedback.show{
+  animation:feedbackPop 0.72s ease;
+}
+
+.feedback.correct{
+  background:#16b75d;
+}
+
+.feedback.wrong{
+  background:#ef3f49;
+}
+
+@keyframes feedbackPop{
+
+  0%{
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+  }
+
+  20%{
+    transform:translate(-50%,-50%) scale(1.18);
+    opacity:1;
+  }
+
+  45%{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+  }
+
+  78%{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+  }
+
+  100%{
+    transform:translate(-50%,-50%) scale(0.55);
+    opacity:0;
+  }
+}
+
+/* =========================================================
+   WRONG OPTION SHAKE
+========================================================= */
+
+.shake{
+  animation:shakeAnimation 0.45s ease;
+}
+
+@keyframes shakeAnimation{
+
+  0%,
+  100%{
+    transform:translateX(0);
+  }
+
+  20%{
+    transform:translateX(-9px);
+  }
+
+  40%{
+    transform:translateX(9px);
+  }
+
+  60%{
+    transform:translateX(-7px);
+  }
+
+  80%{
+    transform:translateX(7px);
+  }
+}
+
+/* =========================================================
+   FINAL SCREEN
+========================================================= */
+
+#finalScreen{
+  background:
+    radial-gradient(
+      circle at center,
+      #ffffff 0%,
+      #fff9cf 53%,
+      #ffd879 100%
+    );
+
+  align-items:center;
+  justify-content:center;
+
+  flex-direction:column;
+
+  text-align:center;
+
+  overflow:hidden;
+}
+
+.final-card{
+  position:relative;
+  z-index:5;
+
+  width:min(88%, 650px);
+
+  background:rgba(255,255,255,0.94);
+
+  border:7px solid #ff9f1c;
+  border-radius:35px;
+
+  padding:clamp(25px, 6vw, 55px) 20px;
+
+  box-shadow:
+    0 10px 0 rgba(176,100,0,0.18),
+    0 18px 38px rgba(0,0,0,0.17);
+}
+
+.final-title{
+  color:#ff5c42;
+
+  font-size:clamp(48px, 10vw, 100px);
+  font-weight:1000;
+
+  line-height:1;
+
+  text-shadow:
+    3px 3px 0 #ffe070,
+    6px 6px 0 rgba(255,131,59,0.2);
+}
+
+.final-message{
+  margin-top:14px;
+
+  color:#584100;
+
+  font-size:clamp(20px, 4.2vw, 39px);
+  font-weight:900;
+}
+
+.play-again{
+  margin-top:24px;
+
+  border:none;
+  border-radius:18px;
+
+  background:#16af5d;
+  color:#ffffff;
+
+  padding:13px 32px;
+
+  font-size:clamp(20px, 3.3vw, 31px);
+  font-weight:900;
+
+  cursor:pointer;
+
+  box-shadow:0 7px 0 #087b3b;
+
+  touch-action:manipulation;
+}
+
+.play-again:active{
+  transform:translateY(5px);
+  box-shadow:0 2px 0 #087b3b;
+}
+
+/* =========================================================
+   COLOURFUL BALL RAIN
+========================================================= */
+
+.ball-container{
+  position:absolute;
+  inset:0;
+
+  overflow:hidden;
+
+  pointer-events:none;
+
+  z-index:2;
+}
+
+.ball{
+  position:absolute;
+
+  top:-90px;
+
+  width:var(--size);
+  height:var(--size);
+
+  border-radius:50%;
+
+  background:var(--ball-colour);
+
+  border:3px solid rgba(255,255,255,0.72);
+
+  box-shadow:
+    inset -7px -7px 0 rgba(0,0,0,0.12),
+    0 5px 10px rgba(0,0,0,0.12);
+
+  animation:
+    ballFall var(--speed) linear infinite;
+
+  animation-delay:var(--delay);
+}
+
+@keyframes ballFall{
+
+  0%{
+    transform:
+      translateY(-100px)
+      rotate(0deg);
+  }
+
+  100%{
+    transform:
+      translateY(calc(100vh + 160px))
+      rotate(540deg);
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE SCREENS
+========================================================= */
+
+@media(max-width:680px){
+
+  .instruction{
+    border-width:3px;
+    border-radius:13px;
+    padding:6px 5px;
+  }
+
+  .room-section{
+    margin-top:5px;
+  }
+
+  .room-image-box{
+    width:min(59vw, 280px);
+    height:clamp(104px, 24vh, 185px);
+
+    border-width:4px;
+    border-radius:14px;
+  }
+
+  .room-name{
+    font-size:clamp(16px, 4.8vw, 23px);
+
+    padding:2px 12px;
+
+    border-width:2px;
+  }
+
+  .options{
+    gap:5px;
+    margin-top:5px;
+  }
+
+  .option{
+    border-width:3px;
+    border-radius:12px;
+
+    padding:3px;
+
+    box-shadow:0 3px 0 rgba(0,0,0,0.15);
+  }
+
+  .option img{
+    max-height:105px;
+  }
+
+  .option-label{
+    min-height:31px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:3px 1px;
+
+    font-size:clamp(10px, 3.15vw, 16px);
+  }
+
+  .option.correct-selected::after{
+    width:27px;
+    height:27px;
+
+    font-size:20px;
+
+    border-width:2px;
+  }
+
+  .feedback{
+    width:90px;
+    height:90px;
+
+    font-size:67px;
+  }
+}
+
+/* =========================================================
+   VERY SHORT SCREENS
+========================================================= */
+
+@media(max-height:610px){
+
+  .instruction{
+    padding:4px 7px;
+    font-size:clamp(13px, 2.2vw, 19px);
+  }
+
+  .room-section{
+    margin-top:4px;
+  }
+
+  .room-image-box{
+    height:24vh;
+    min-height:95px;
+  }
+
+  .room-name{
+    margin-top:2px;
+
+    padding:1px 12px;
+
+    font-size:clamp(15px, 2.5vw, 21px);
+  }
+
+  .options{
+    margin-top:4px;
+  }
+
+  .option{
+    padding:2px;
+  }
+
+  .option-label{
+    padding:2px 1px;
+  }
+}
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media(
+  max-height:500px
+) and (
+  orientation:landscape
+){
+
+  #gameScreen{
+    padding:4px;
+  }
+
+  .instruction{
+    width:98%;
+
+    padding:4px;
+
+    font-size:15px;
+  }
+
+  .room-section{
+    margin-top:3px;
+  }
+
+  .room-image-box{
+    width:200px;
+    height:105px;
+
+    border-width:3px;
+  }
+
+  .room-name{
+    font-size:16px;
+    padding:1px 10px;
+  }
+
+  .options{
+    height:145px;
+
+    margin-top:3px;
+
+    gap:6px;
+  }
+
+  .option img{
+    max-height:88px;
+  }
+
+  .option-label{
+    min-height:25px;
+
+    font-size:12px;
+
+    padding:2px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     SLIDE 1 - INNOVINE LOGO
+====================================================== -->
+
+<section
+  id="logoScreen"
+  class="screen active"
+>
+
+  <img
+    src="assets/innovine-logo.png"
+    alt="Innovine logo"
+  >
+
+</section>
+
+
+<!-- =====================================================
+     SLIDES 2 TO 5 - GAME
+====================================================== -->
+
+<section
+  id="gameScreen"
+  class="screen"
+>
+
+  <div class="instruction">
+
+    Identify the given room and tap on the correct objects.
+
+  </div>
+
+
+  <div class="room-section">
+
+    <div class="room-image-box">
+
+      <img
+        id="roomImage"
+        src=""
+        alt=""
+      >
+
+    </div>
+
+    <div
+      id="roomName"
+      class="room-name"
+    >
+    </div>
+
+  </div>
+
+
+  <div
+    id="options"
+    class="options"
+  >
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     CORRECT AND WRONG SYMBOL
+====================================================== -->
+
+<div
+  id="feedback"
+  class="feedback"
+>
+</div>
+
+
+<!-- =====================================================
+     SLIDE 6 - GOOD JOB
+====================================================== -->
+
+<section
+  id="finalScreen"
+  class="screen"
+>
+
+  <div
+    id="ballContainer"
+    class="ball-container"
+  >
+  </div>
+
+
+  <div class="final-card">
+
+    <div class="final-title">
+
+      Good Job!
+
+    </div>
+
+    <div class="final-message">
+
+      You identified all the objects!
+
+    </div>
+
+    <button
+      id="playAgainButton"
+      class="play-again"
+      type="button"
+    >
+
+      Play Again
+
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     AUDIO
+====================================================== -->
+
+<audio
+  id="clapSound"
+  preload="auto"
+>
+
+  <source
+    src="assets/clap.mp3"
+    type="audio/mpeg"
+  >
+
+</audio>
+
+
+<audio
+  id="wrongSound"
+  preload="auto"
+>
+
+  <source
+    src="assets/wrong.mp3"
+    type="audio/mpeg"
+  >
+
+</audio>
+
+
+<script>
+
+/* =========================================================
+   ROOM AND OBJECT DATA
+========================================================= */
+
+var questions = [
+
+  {
+
+    roomName:"kitchen",
+
+    roomImage:"assets/kitchen.png",
+
+    options:[
+
+      {
+        name:"knife",
+        image:"assets/knife.png",
+        correct:true
+      },
+
+      {
+        name:"shower",
+        image:"assets/shower.png",
+        correct:false
+      },
+
+      {
+        name:"refrigerator",
+        image:"assets/refrigerator.png",
+        correct:true
+      },
+
+      {
+        name:"cupboard",
+        image:"assets/cupboard.png",
+        correct:false
+      }
+
+    ]
+
+  },
+
+
+  {
+
+    roomName:"living room",
+
+    roomImage:"assets/livingroom.png",
+
+    options:[
+
+      {
+        name:"microwave",
+        image:"assets/microwave.png",
+        correct:false
+      },
+
+      {
+        name:"centre table",
+        image:"assets/centretable.png",
+        correct:true
+      },
+
+      {
+        name:"bucket",
+        image:"assets/bucket.png",
+        correct:false
+      },
+
+      {
+        name:"sofa",
+        image:"assets/sofa.png",
+        correct:true
+      }
+
+    ]
+
+  },
+
+
+  {
+
+    roomName:"bedroom",
+
+    roomImage:"assets/bedroom.png",
+
+    options:[
+
+      {
+        name:"dining table",
+        image:"assets/dinningtable.png",
+        correct:false
+      },
+
+      {
+        name:"bed",
+        image:"assets/bed.png",
+        correct:true
+      },
+
+      {
+        name:"cupboard",
+        image:"assets/cupboard.png",
+        correct:true
+      },
+
+      {
+        name:"knife",
+        image:"assets/knife.png",
+        correct:false
+      }
+
+    ]
+
+  },
+
+
+  {
+
+    roomName:"bathroom",
+
+    roomImage:"assets/bathroom.png",
+
+    options:[
+
+      {
+        name:"soap",
+        image:"assets/soap.png",
+        correct:true
+      },
+
+      {
+        name:"stove",
+        image:"assets/stove.png",
+        correct:false
+      },
+
+      {
+        name:"rolling pin",
+        image:"assets/rollingpin.png",
+        correct:false
+      },
+
+      {
+        name:"shower",
+        image:"assets/shower.png",
+        correct:true
+      }
+
+    ]
+
+  }
+
+];
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+var currentQuestion = 0;
+
+var correctObjectsSelected = 0;
+
+var changingSlide = false;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+var logoScreen =
+document.getElementById("logoScreen");
+
+var gameScreen =
+document.getElementById("gameScreen");
+
+var finalScreen =
+document.getElementById("finalScreen");
+
+var roomImage =
+document.getElementById("roomImage");
+
+var roomName =
+document.getElementById("roomName");
+
+var optionsArea =
+document.getElementById("options");
+
+var feedback =
+document.getElementById("feedback");
+
+var clapSound =
+document.getElementById("clapSound");
+
+var wrongSound =
+document.getElementById("wrongSound");
+
+var playAgainButton =
+document.getElementById("playAgainButton");
+
+var ballContainer =
+document.getElementById("ballContainer");
+
+
+/* =========================================================
+   LOGO SCREEN
+========================================================= */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    preloadGameImages();
+
+    setTimeout(
+      function(){
+
+        logoScreen.classList.remove("active");
+
+        gameScreen.classList.add("active");
+
+        loadQuestion();
+
+      },
+      2500
+    );
+
+  }
+);
+
+
+/* =========================================================
+   PRELOAD IMAGES
+========================================================= */
+
+function preloadGameImages(){
+
+  var imageList = [
+
+    "assets/home.png",
+
+    "assets/kitchen.png",
+
+    "assets/livingroom.png",
+
+    "assets/bedroom.png",
+
+    "assets/bathroom.png",
+
+    "assets/knife.png",
+
+    "assets/shower.png",
+
+    "assets/refrigerator.png",
+
+    "assets/cupboard.png",
+
+    "assets/microwave.png",
+
+    "assets/centretable.png",
+
+    "assets/bucket.png",
+
+    "assets/sofa.png",
+
+    "assets/dinningtable.png",
+
+    "assets/bed.png",
+
+    "assets/soap.png",
+
+    "assets/stove.png",
+
+    "assets/rollingpin.png"
+
+  ];
+
+
+  for(
+    var i = 0;
+    i < imageList.length;
+    i++
+  ){
+
+    var image = new Image();
+
+    image.src = imageList[i];
+
+  }
+
+}
+
+
+/* =========================================================
+   LOAD QUESTION
+========================================================= */
+
+function loadQuestion(){
+
+  changingSlide = false;
+
+  correctObjectsSelected = 0;
+
+  optionsArea.innerHTML = "";
+
+
+  var question =
+  questions[currentQuestion];
+
+
+  roomImage.src =
+  question.roomImage;
+
+  roomImage.alt =
+  question.roomName;
+
+
+  roomName.textContent =
+  question.roomName;
+
+
+  for(
+    var i = 0;
+    i < question.options.length;
+    i++
+  ){
+
+    createOption(
+      question.options[i]
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CREATE OPTION
+========================================================= */
+
+function createOption(optionData){
+
+  var optionButton =
+  document.createElement("button");
+
+
+  optionButton.type = "button";
+
+  optionButton.className =
+  "option";
+
+
+  optionButton.setAttribute(
+    "aria-label",
+    optionData.name
+  );
+
+
+  var imageArea =
+  document.createElement("div");
+
+
+  imageArea.className =
+  "option-image";
+
+
+  var image =
+  document.createElement("img");
+
+
+  image.src =
+  optionData.image;
+
+
+  image.alt =
+  optionData.name;
+
+
+  image.draggable =
+  false;
+
+
+  var label =
+  document.createElement("div");
+
+
+  label.className =
+  "option-label";
+
+
+  label.textContent =
+  optionData.name;
+
+
+  imageArea.appendChild(
+    image
+  );
+
+
+  optionButton.appendChild(
+    imageArea
+  );
+
+
+  optionButton.appendChild(
+    label
+  );
+
+
+  optionButton.onclick =
+  function(){
+
+    checkAnswer(
+      optionButton,
+      optionData
+    );
+
+  };
+
+
+  optionsArea.appendChild(
+    optionButton
+  );
+
+}
+
+
+/* =========================================================
+   CHECK ANSWER
+========================================================= */
+
+function checkAnswer(
+  selectedButton,
+  optionData
+){
+
+  if(
+    changingSlide
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    selectedButton.classList.contains(
+      "correct-selected"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    optionData.correct
+  ){
+
+    selectedButton.classList.add(
+      "correct-selected"
+    );
+
+
+    correctObjectsSelected++;
+
+
+    playAudio(
+      clapSound
+    );
+
+
+    showFeedback(
+      "correct"
+    );
+
+
+    if(
+      correctObjectsSelected === 2
+    ){
+
+      changingSlide = true;
+
+
+      setTimeout(
+        goToNextSlide,
+        1150
+      );
+
+    }
+
+  }
+
+  else{
+
+    selectedButton.classList.remove(
+      "shake"
+    );
+
+
+    void selectedButton.offsetWidth;
+
+
+    selectedButton.classList.add(
+      "shake"
+    );
+
+
+    playAudio(
+      wrongSound
+    );
+
+
+    showFeedback(
+      "wrong"
+    );
+
+
+    setTimeout(
+      function(){
+
+        selectedButton.classList.remove(
+          "shake"
+        );
+
+      },
+      470
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   PLAY AUDIO
+========================================================= */
+
+function playAudio(audioElement){
+
+  try{
+
+    audioElement.pause();
+
+    audioElement.currentTime = 0;
+
+
+    var playPromise =
+    audioElement.play();
+
+
+    if(
+      playPromise !== undefined
+    ){
+
+      playPromise.catch(
+        function(){
+        }
+      );
+
+    }
+
+  }
+
+  catch(error){
+
+  }
+
+}
+
+
+/* =========================================================
+   SHOW FEEDBACK
+========================================================= */
+
+function showFeedback(type){
+
+  feedback.className =
+  "feedback";
+
+
+  void feedback.offsetWidth;
+
+
+  if(
+    type === "correct"
+  ){
+
+    feedback.textContent =
+    "✓";
+
+
+    feedback.classList.add(
+      "correct"
+    );
+
+  }
+
+  else{
+
+    feedback.textContent =
+    "✕";
+
+
+    feedback.classList.add(
+      "wrong"
+    );
+
+  }
+
+
+  feedback.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =========================================================
+   NEXT SLIDE
+========================================================= */
+
+function goToNextSlide(){
+
+  currentQuestion++;
+
+
+  if(
+    currentQuestion <
+    questions.length
+  ){
+
+    loadQuestion();
+
+  }
+
+  else{
+
+    showFinalScreen();
+
+  }
+
+}
+
+
+/* =========================================================
+   FINAL SCREEN
+========================================================= */
+
+function showFinalScreen(){
+
+  gameScreen.classList.remove(
+    "active"
+  );
+
+
+  finalScreen.classList.add(
+    "active"
+  );
+
+
+  createBallRain();
+
+}
+
+
+/* =========================================================
+   CREATE COLOURFUL BALLS
+========================================================= */
+
+function createBallRain(){
+
+  ballContainer.innerHTML = "";
+
+
+  var colours = [
+
+    "#ff4d6d",
+
+    "#ff9f1c",
+
+    "#ffd60a",
+
+    "#2ec4b6",
+
+    "#3a86ff",
+
+    "#8b5cf6",
+
+    "#ff70a6",
+
+    "#48cae4",
+
+    "#65d66e"
+
+  ];
+
+
+  for(
+    var i = 0;
+    i < 46;
+    i++
+  ){
+
+    var ball =
+    document.createElement("span");
+
+
+    ball.className =
+    "ball";
+
+
+    var size =
+    18 +
+    Math.floor(
+      Math.random() * 31
+    );
+
+
+    var position =
+    Math.random() * 100;
+
+
+    var speed =
+    3.8 +
+    Math.random() * 4;
+
+
+    var delay =
+    -(Math.random() * 8);
+
+
+    var colour =
+    colours[
+      Math.floor(
+        Math.random() *
+        colours.length
+      )
+    ];
+
+
+    ball.style.left =
+    position + "%";
+
+
+    ball.style.setProperty(
+      "--size",
+      size + "px"
+    );
+
+
+    ball.style.setProperty(
+      "--speed",
+      speed + "s"
+    );
+
+
+    ball.style.setProperty(
+      "--delay",
+      delay + "s"
+    );
+
+
+    ball.style.setProperty(
+      "--ball-colour",
+      colour
+    );
+
+
+    ballContainer.appendChild(
+      ball
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   PLAY AGAIN
+========================================================= */
+
+playAgainButton.addEventListener(
+  "click",
+  function(){
+
+    currentQuestion = 0;
+
+    correctObjectsSelected = 0;
+
+    changingSlide = false;
+
+
+    ballContainer.innerHTML = "";
+
+
+    finalScreen.classList.remove(
+      "active"
+    );
+
+
+    gameScreen.classList.add(
+      "active"
+    );
+
+
+    loadQuestion();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
