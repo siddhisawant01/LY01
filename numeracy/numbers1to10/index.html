@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Count and Choose</title>
+
+<style>
+
+/* ==================================================
+   BASIC SETTINGS
+================================================== */
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+
+    width:100%;
+    height:100%;
+
+    margin:0;
+    padding:0;
+
+    overflow:hidden;
+
+    font-family:
+    "Arial Rounded MT Bold",
+    "Trebuchet MS",
+    Arial,
+    sans-serif;
+
+    background:#ffffff;
+
+}
+
+
+/* ==================================================
+   COMMON SCREEN
+================================================== */
+
+.screen{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    display:none;
+
+}
+
+
+/* ==================================================
+   LOGO SCREEN
+================================================== */
+
+#logoScreen{
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    background:#ffffff;
+
+    z-index:100;
+
+}
+
+#logoScreen img{
+
+    width:270px;
+
+    max-width:68vw;
+
+    height:auto;
+
+    animation:logoPop 1s ease;
+
+}
+
+@keyframes logoPop{
+
+    0%{
+        transform:scale(0.5);
+        opacity:0;
+    }
+
+    70%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+
+/* ==================================================
+   GAME SCREEN
+================================================== */
+
+#gameScreen{
+
+    display:none;
+
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    background:
+
+    linear-gradient(
+        rgba(255,255,255,0.18),
+        rgba(255,255,255,0.18)
+    ),
+
+    url("assets/background.png");
+
+    background-size:cover;
+
+    background-position:center;
+
+    padding:
+    max(12px,2vh)
+    max(12px,2vw);
+
+}
+
+
+/* ==================================================
+   MAIN GAME CARD
+================================================== */
+
+.game-card{
+
+    width:min(900px,94vw);
+
+    height:min(690px,94vh);
+
+    background:rgba(255,255,255,0.94);
+
+    border-radius:34px;
+
+    border:7px solid #ff4b91;
+
+    box-shadow:
+
+    0 10px 0 rgba(162,64,136,0.24),
+
+    0 18px 32px rgba(44,42,100,0.25);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:space-evenly;
+
+    padding:
+
+    clamp(12px,2.2vh,22px)
+
+    clamp(12px,2vw,25px);
+
+    position:relative;
+
+}
+
+
+/* ==================================================
+   INSTRUCTION
+================================================== */
+
+.instruction{
+
+    width:96%;
+
+    text-align:center;
+
+    color:#ffffff;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #7c4dff,
+        #ff3f8f
+    );
+
+    border-radius:22px;
+
+    padding:
+
+    clamp(9px,1.6vh,15px)
+
+    clamp(10px,2vw,24px);
+
+    font-size:
+
+    clamp(
+        17px,
+        2.35vw,
+        30px
+    );
+
+    line-height:1.25;
+
+    box-shadow:
+
+    0 6px 0 #5032a1;
+
+}
+
+
+/* ==================================================
+   IMAGE FRAME
+================================================== */
+
+.picture-frame{
+
+    width:min(570px,87vw);
+
+    height:
+
+    clamp(
+        230px,
+        46vh,
+        380px
+    );
+
+    border-radius:30px;
+
+    padding:10px;
+
+    background:
+
+    linear-gradient(
+
+        45deg,
+
+        #ff245d,
+
+        #ffce00,
+
+        #25c768,
+
+        #1e8aff,
+
+        #a24cff,
+
+        #ff4d9d
+
+    );
+
+    box-shadow:
+
+    0 8px 0 rgba(91,54,152,0.26),
+
+    0 10px 20px rgba(58,40,110,0.2);
+
+    animation:borderGlow 3s linear infinite;
+
+}
+
+@keyframes borderGlow{
+
+    0%{
+        filter:hue-rotate(0deg);
+    }
+
+    100%{
+        filter:hue-rotate(360deg);
+    }
+
+}
+
+.picture-inner{
+
+    width:100%;
+    height:100%;
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+}
+
+#objectImage{
+
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+    padding:5px;
+
+}
+
+
+/* ==================================================
+   NUMBER OPTIONS
+================================================== */
+
+.options{
+
+    width:min(590px,91vw);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:
+
+    clamp(
+        12px,
+        3vw,
+        28px
+    );
+
+}
+
+.number-button{
+
+    width:
+
+    clamp(
+        82px,
+        16vw,
+        135px
+    );
+
+    height:
+
+    clamp(
+        68px,
+        10vh,
+        94px
+    );
+
+    border:none;
+
+    border-radius:25px;
+
+    color:#ffffff;
+
+    font-size:
+
+    clamp(
+        36px,
+        6vw,
+        61px
+    );
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    box-shadow:
+
+    0 8px 0 rgba(68,54,121,0.35),
+
+    0 11px 17px rgba(50,40,100,0.18);
+
+    transition:
+
+    transform 0.12s ease,
+
+    box-shadow 0.12s ease;
+
+}
+
+.number-button:nth-child(1){
+
+    background:
+
+    linear-gradient(
+        145deg,
+        #ff4d83,
+        #ff2264
+    );
+
+}
+
+.number-button:nth-child(2){
+
+    background:
+
+    linear-gradient(
+        145deg,
+        #22c88b,
+        #08a968
+    );
+
+}
+
+.number-button:nth-child(3){
+
+    background:
+
+    linear-gradient(
+        145deg,
+        #3d9dff,
+        #5660ed
+    );
+
+}
+
+.number-button:active{
+
+    transform:translateY(7px);
+
+    box-shadow:
+
+    0 2px 0 rgba(68,54,121,0.35);
+
+}
+
+.number-button:disabled{
+
+    cursor:default;
+
+}
+
+
+/* ==================================================
+   CORRECT AND WRONG POP-UP
+================================================== */
+
+#feedback{
+
+    position:fixed;
+
+    top:50%;
+    left:50%;
+
+    transform:
+
+    translate(-50%,-50%)
+
+    scale(0);
+
+    width:
+
+    clamp(
+        135px,
+        24vw,
+        210px
+    );
+
+    height:
+
+    clamp(
+        135px,
+        24vw,
+        210px
+    );
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#ffffff;
+
+    font-size:
+
+    clamp(
+        85px,
+        16vw,
+        150px
+    );
+
+    font-weight:900;
+
+    z-index:300;
+
+    border:9px solid #ffffff;
+
+    box-shadow:
+
+    0 13px 35px
+
+    rgba(0,0,0,0.28);
+
+    opacity:0;
+
+    pointer-events:none;
+
+}
+
+#feedback.show{
+
+    animation:
+
+    feedbackPop
+
+    0.82s
+
+    ease
+
+    forwards;
+
+}
+
+#feedback.correct{
+
+    background:#19bb61;
+
+}
+
+#feedback.wrong{
+
+    background:#ef2f42;
+
+}
+
+@keyframes feedbackPop{
+
+    0%{
+
+        opacity:0;
+
+        transform:
+
+        translate(-50%,-50%)
+
+        scale(0);
+
+    }
+
+    42%{
+
+        opacity:1;
+
+        transform:
+
+        translate(-50%,-50%)
+
+        scale(1.18);
+
+    }
+
+    68%{
+
+        transform:
+
+        translate(-50%,-50%)
+
+        scale(0.98);
+
+    }
+
+    100%{
+
+        opacity:1;
+
+        transform:
+
+        translate(-50%,-50%)
+
+        scale(1);
+
+    }
+
+}
+
+
+/* ==================================================
+   SHAKE EFFECT
+================================================== */
+
+.shake{
+
+    animation:shakeCard 0.4s ease;
+
+}
+
+@keyframes shakeCard{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    20%{
+        transform:translateX(-12px);
+    }
+
+    40%{
+        transform:translateX(12px);
+    }
+
+    60%{
+        transform:translateX(-8px);
+    }
+
+    80%{
+        transform:translateX(8px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
+
+}
+
+
+/* ==================================================
+   FINAL SCREEN
+================================================== */
+
+#finalScreen{
+
+    background:
+
+    linear-gradient(
+        rgba(255,255,255,0.1),
+        rgba(255,255,255,0.1)
+    ),
+
+    url("assets/background.png");
+
+    background-size:cover;
+
+    background-position:center;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+
+}
+
+.final-box{
+
+    position:relative;
+
+    z-index:20;
+
+    width:min(790px,90vw);
+
+    min-height:
+
+    min(
+        410px,
+        62vh
+    );
+
+    background:
+
+    rgba(
+        255,
+        255,
+        255,
+        0.95
+    );
+
+    border:
+
+    clamp(
+        6px,
+        1vw,
+        10px
+    )
+
+    solid
+
+    #ff3f86;
+
+    border-radius:42px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    box-shadow:
+
+    0 12px 0
+
+    rgba(135,46,133,0.28),
+
+    0 20px 38px
+
+    rgba(60,38,113,0.28);
+
+    animation:
+
+    finalBoxPop
+
+    0.75s
+
+    ease;
+
+}
+
+@keyframes finalBoxPop{
+
+    0%{
+
+        opacity:0;
+
+        transform:scale(0.4);
+
+    }
+
+    75%{
+
+        transform:scale(1.08);
+
+    }
+
+    100%{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+.fantastic{
+
+    margin:0;
+
+    padding:20px;
+
+    font-size:
+
+    clamp(
+        55px,
+        10vw,
+        115px
+    );
+
+    line-height:1;
+
+    color:#ff3282;
+
+    text-shadow:
+
+    4px 4px 0 #ffe000,
+
+    8px 8px 0 #34bd82,
+
+    12px 12px 0 #4983ff;
+
+    animation:
+
+    fantasticBounce
+
+    1.1s
+
+    ease
+
+    infinite
+
+    alternate;
+
+}
+
+@keyframes fantasticBounce{
+
+    from{
+
+        transform:
+
+        translateY(0)
+
+        rotate(-1deg);
+
+    }
+
+    to{
+
+        transform:
+
+        translateY(-15px)
+
+        rotate(1deg);
+
+    }
+
+}
+
+
+/* ==================================================
+   FALLING NUMBERS
+================================================== */
+
+.number-rain{
+
+    position:absolute;
+
+    top:-100px;
+
+    z-index:10;
+
+    font-weight:900;
+
+    text-shadow:
+
+    3px 3px 0
+
+    rgba(
+        255,
+        255,
+        255,
+        0.9
+    );
+
+    animation:
+
+    numberFall
+
+    linear
+
+    infinite;
+
+    pointer-events:none;
+
+}
+
+@keyframes numberFall{
+
+    0%{
+
+        top:-120px;
+
+        transform:
+
+        rotate(0deg);
+
+    }
+
+    100%{
+
+        top:110vh;
+
+        transform:
+
+        rotate(520deg);
+
+    }
+
+}
+
+
+/* ==================================================
+   SMALL HEIGHT DEVICES
+================================================== */
+
+@media
+
+(max-height:650px){
+
+    .game-card{
+
+        height:96vh;
+
+        border-width:5px;
+
+        border-radius:24px;
+
+    }
+
+    .instruction{
+
+        font-size:
+
+        clamp(
+            14px,
+            2.7vw,
+            23px
+        );
+
+        padding:7px 10px;
+
+    }
+
+    .picture-frame{
+
+        height:
+
+        clamp(
+            205px,
+            44vh,
+            285px
+        );
+
+    }
+
+    .number-button{
+
+        height:62px;
+
+        border-radius:18px;
+
+    }
+
+}
+
+
+/* ==================================================
+   LANDSCAPE MOBILE
+================================================== */
+
+@media
+
+(max-height:520px)
+
+and
+
+(orientation:landscape){
+
+    .game-card{
+
+        width:95vw;
+
+        height:96vh;
+
+        display:grid;
+
+        grid-template-columns:
+
+        1.25fr
+
+        0.75fr;
+
+        grid-template-rows:
+
+        auto
+
+        1fr;
+
+        gap:9px;
+
+        padding:10px 15px;
+
+    }
+
+    .instruction{
+
+        grid-column:1 / 3;
+
+        width:100%;
+
+        font-size:18px;
+
+        padding:8px;
+
+    }
+
+    .picture-frame{
+
+        width:100%;
+
+        height:100%;
+
+        min-height:260px;
+
+    }
+
+    .options{
+
+        width:100%;
+
+        height:100%;
+
+        flex-direction:column;
+
+        gap:10px;
+
+    }
+
+    .number-button{
+
+        width:min(180px,28vw);
+
+        height:60px;
+
+        font-size:36px;
+
+    }
+
+}
+
+
+/* ==================================================
+   VERY SMALL DEVICES
+================================================== */
+
+@media
+
+(max-width:390px){
+
+    .game-card{
+
+        width:95vw;
+
+        border-width:5px;
+
+    }
+
+    .instruction{
+
+        width:100%;
+
+    }
+
+    .picture-frame{
+
+        width:88vw;
+
+    }
+
+    .options{
+
+        gap:10px;
+
+    }
+
+    .number-button{
+
+        width:27vw;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     SLIDE 1: INNOVINE LOGO
+================================================== -->
+
+<section
+
+id="logoScreen"
+
+class="screen"
+
+>
+
+<img
+
+src="assets/innovine-logo.png"
+
+alt="Innovine Logo"
+
+>
+
+</section>
+
+
+
+<!-- ==================================================
+     SLIDES 2 TO 6: QUESTIONS
+================================================== -->
+
+<section
+
+id="gameScreen"
+
+class="screen"
+
+>
+
+<div
+
+class="game-card"
+
+id="gameCard"
+
+>
+
+
+<div
+
+class="instruction"
+
+>
+
+Count the given objects and identify the correct number.
+
+</div>
+
+
+<div
+
+class="picture-frame"
+
+>
+
+<div
+
+class="picture-inner"
+
+>
+
+<img
+
+id="objectImage"
+
+src="assets/3balloons.png"
+
+alt="Objects to count"
+
+>
+
+</div>
+
+</div>
+
+
+<div
+
+class="options"
+
+id="optionsContainer"
+
+>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     FEEDBACK POP-UP
+================================================== -->
+
+<div
+
+id="feedback"
+
+>
+
+</div>
+
+
+
+<!-- ==================================================
+     SLIDE 7: FINAL SCREEN
+================================================== -->
+
+<section
+
+id="finalScreen"
+
+class="screen"
+
+>
+
+<div
+
+class="final-box"
+
+>
+
+<h1
+
+class="fantastic"
+
+>
+
+Fantastic!
+
+</h1>
+
+</div>
+
+</section>
+
+
+
+<!-- ==================================================
+     AUDIO
+================================================== -->
+
+<audio
+
+id="clapSound"
+
+preload="auto"
+
+>
+
+<source
+
+src="assets/clap.mp3"
+
+type="audio/mpeg"
+
+>
+
+</audio>
+
+
+<audio
+
+id="wrongSound"
+
+preload="auto"
+
+>
+
+<source
+
+src="assets/wrong.mp3"
+
+type="audio/mpeg"
+
+>
+
+</audio>
+
+
+
+<script>
+
+/* ==================================================
+   QUESTION INFORMATION
+================================================== */
+
+const questions = [
+
+{
+
+image:"assets/3balloons.png",
+
+options:[3,5,8],
+
+answer:3
+
+},
+
+{
+
+image:"assets/6pineapples.png",
+
+options:[4,6,3],
+
+answer:6
+
+},
+
+{
+
+image:"assets/2crayons.png",
+
+options:[5,1,2],
+
+answer:2
+
+},
+
+{
+
+image:"assets/4candies.png",
+
+options:[4,6,7],
+
+answer:4
+
+},
+
+{
+
+image:"assets/1star.png",
+
+options:[3,7,1],
+
+answer:1
+
+}
+
+];
+
+
+/* ==================================================
+   ELEMENTS
+================================================== */
+
+const logoScreen =
+
+document.getElementById(
+"logoScreen"
+);
+
+
+const gameScreen =
+
+document.getElementById(
+"gameScreen"
+);
+
+
+const finalScreen =
+
+document.getElementById(
+"finalScreen"
+);
+
+
+const objectImage =
+
+document.getElementById(
+"objectImage"
+);
+
+
+const optionsContainer =
+
+document.getElementById(
+"optionsContainer"
+);
+
+
+const feedback =
+
+document.getElementById(
+"feedback"
+);
+
+
+const gameCard =
+
+document.getElementById(
+"gameCard"
+);
+
+
+const clapSound =
+
+document.getElementById(
+"clapSound"
+);
+
+
+const wrongSound =
+
+document.getElementById(
+"wrongSound"
+);
+
+
+/* ==================================================
+   GAME VARIABLES
+================================================== */
+
+let currentQuestion = 0;
+
+let answerLocked = false;
+
+
+/* ==================================================
+   START AUTOMATICALLY AFTER LOGO
+================================================== */
+
+window.addEventListener(
+
+"load",
+
+function(){
+
+logoScreen.style.display =
+"flex";
+
+
+setTimeout(
+
+function(){
+
+logoScreen.style.display =
+"none";
+
+gameScreen.style.display =
+"flex";
+
+showQuestion();
+
+},
+
+5000
+
+);
+
+}
+
+);
+
+
+/* ==================================================
+   DISPLAY A QUESTION
+================================================== */
+
+function showQuestion(){
+
+answerLocked = false;
+
+
+const question =
+
+questions[currentQuestion];
+
+
+objectImage.src =
+
+question.image;
+
+
+optionsContainer.innerHTML =
+"";
+
+
+question.options.forEach(
+
+function(number){
+
+const button =
+
+document.createElement(
+"button"
+);
+
+
+button.className =
+
+"number-button";
+
+
+button.textContent =
+
+number;
+
+
+button.setAttribute(
+
+"aria-label",
+
+"Number " + number
+
+);
+
+
+button.addEventListener(
+
+"click",
+
+function(){
+
+checkAnswer(
+
+number,
+
+button
+
+);
+
+}
+
+);
+
+
+optionsContainer.appendChild(
+
+button
+
+);
+
+}
+
+);
+
+}
+
+
+/* ==================================================
+   CHECK ANSWER
+================================================== */
+
+function checkAnswer(
+
+selectedNumber,
+
+selectedButton
+
+){
+
+if(answerLocked){
+
+return;
+
+}
+
+
+const correctAnswer =
+
+questions[currentQuestion].answer;
+
+
+if(
+
+selectedNumber ===
+correctAnswer
+
+){
+
+answerLocked = true;
+
+
+disableButtons();
+
+
+showFeedback(
+
+"✓",
+
+"correct"
+
+);
+
+
+playSound(
+
+clapSound
+
+);
+
+
+selectedButton.style.background =
+
+"linear-gradient(145deg,#44dc7c,#0ca64c)";
+
+
+selectedButton.style.outline =
+
+"7px solid #c8ffd9";
+
+
+setTimeout(
+
+function(){
+
+hideFeedback();
+
+
+currentQuestion++;
+
+
+if(
+
+currentQuestion <
+questions.length
+
+){
+
+showQuestion();
+
+}
+
+else{
+
+showFinalScreen();
+
+}
+
+},
+
+1500
+
+);
+
+}
+
+else{
+
+showFeedback(
+
+"✕",
+
+"wrong"
+
+);
+
+
+playSound(
+
+wrongSound
+
+);
+
+
+gameCard.classList.remove(
+"shake"
+);
+
+
+void gameCard.offsetWidth;
+
+
+gameCard.classList.add(
+"shake"
+);
+
+
+selectedButton.style.background =
+
+"linear-gradient(145deg,#ff5b66,#cf1830)";
+
+
+setTimeout(
+
+function(){
+
+hideFeedback();
+
+
+selectedButton.style.background =
+"";
+
+
+},
+
+800
+
+);
+
+}
+
+}
+
+
+/* ==================================================
+   DISABLE OPTIONS
+================================================== */
+
+function disableButtons(){
+
+const buttons =
+
+document.querySelectorAll(
+
+".number-button"
+
+);
+
+
+buttons.forEach(
+
+function(button){
+
+button.disabled = true;
+
+}
+
+);
+
+}
+
+
+/* ==================================================
+   SHOW FEEDBACK
+================================================== */
+
+function showFeedback(
+
+symbol,
+
+type
+
+){
+
+feedback.className =
+"";
+
+
+feedback.textContent =
+
+symbol;
+
+
+feedback.classList.add(
+
+type,
+
+"show"
+
+);
+
+}
+
+
+/* ==================================================
+   HIDE FEEDBACK
+================================================== */
+
+function hideFeedback(){
+
+feedback.className =
+"";
+
+}
+
+
+/* ==================================================
+   AUDIO
+================================================== */
+
+function playSound(audio){
+
+try{
+
+audio.pause();
+
+audio.currentTime = 0;
+
+const playPromise =
+
+audio.play();
+
+
+if(
+
+playPromise !== undefined
+
+){
+
+playPromise.catch(
+
+function(){
+
+/*
+
+Some older browsers may block
+automatic audio.
+
+The game will continue normally.
+
+*/
+
+}
+
+);
+
+}
+
+}
+
+catch(error){
+
+/*
+
+The game continues even if audio
+is unavailable.
+
+*/
+
+}
+
+}
+
+
+/* ==================================================
+   FINAL SCREEN
+================================================== */
+
+function showFinalScreen(){
+
+gameScreen.style.display =
+"none";
+
+
+finalScreen.style.display =
+"flex";
+
+
+createNumberRain();
+
+}
+
+
+/* ==================================================
+   COLOURFUL NUMBER RAIN
+================================================== */
+
+function createNumberRain(){
+
+const colours = [
+
+"#ff2f76",
+
+"#ffc900",
+
+"#25bf72",
+
+"#2683ff",
+
+"#8a44ec",
+
+"#ff551e"
+
+];
+
+
+for(
+
+let i = 0;
+
+i < 44;
+
+i++
+
+){
+
+const number =
+
+document.createElement(
+"div"
+);
+
+
+number.className =
+
+"number-rain";
+
+
+number.textContent =
+
+Math.floor(
+
+Math.random() * 10
+
+);
+
+
+number.style.left =
+
+Math.random() * 96 +
+
+"%";
+
+
+number.style.fontSize =
+
+(
+
+35 +
+
+Math.random() * 48
+
+)
+
++
+
+"px";
+
+
+number.style.color =
+
+colours[
+
+Math.floor(
+
+Math.random() *
+
+colours.length
+
+)
+
+];
+
+
+number.style.animationDuration =
+
+(
+
+3 +
+
+Math.random() * 4
+
+)
+
++
+
+"s";
+
+
+number.style.animationDelay =
+
+(
+
+Math.random() * 3
+
+)
+
++
+
+"s";
+
+
+finalScreen.appendChild(
+
+number
+
+);
+
+}
+
+}
+
+</script>
+
+
+</body>
+
+</html>
